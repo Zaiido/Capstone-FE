@@ -58,15 +58,11 @@ Describe your project
 
 The following tools were used in this project:
 
-- [Expo](https://expo.io/)
+<!-- - [Expo](https://expo.io/)
 - [Node.js](https://nodejs.org/en/)
 - [React](https://pt-br.reactjs.org/)
 - [React Native](https://reactnative.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-
-## :white_check_mark: Requirements
-
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
+- [TypeScript](https://www.typescriptlang.org/) -->
 
 ## :checkered_flag: Starting
 
@@ -78,19 +74,17 @@ $ git clone https://github.com/Zaiido/capstone-fe
 $ cd capstone-fe
 
 # Install dependencies
-$ yarn
+$ npm i
 
 # Run the project
-$ yarn start
+$ npm start
 
 # The server will initialize in the <http://localhost:3000>
 ```
 
 ## :memo: License
 
-This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
-
-Made with :heart: by <a href="https://github.com/Zaiido" target="_blank">{{YOUR_NAME}}</a>
+Made with :heart: by <a href="https://github.com/Zaiido" target="_blank">Zaide Kurti</a>
 
 &#xa0;
 
