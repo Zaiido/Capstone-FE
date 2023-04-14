@@ -23,7 +23,6 @@
 </p>
 
 <h4 align="center">
-Status
 	🚧  Capstone FE 🚀 Under construction...  🚧
 </h4>
 
