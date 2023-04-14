@@ -15,8 +15,6 @@
 
   <img alt="Repository size" src="https://img.shields.io/github/repo-size/Zaiido/capstone-fe?color=56BEB8">
 
-  <img alt="License" src="https://img.shields.io/github/license/Zaiido/capstone-fe?color=56BEB8">
-
   <!-- <img alt="Github issues" src="https://img.shields.io/github/issues/Zaiido/capstone-fe?color=56BEB8" /> -->
 
   <!-- <img alt="Github forks" src="https://img.shields.io/github/forks/Zaiido/capstone-fe?color=56BEB8" /> -->
@@ -24,19 +22,18 @@
   <!-- <img alt="Github stars" src="https://img.shields.io/github/stars/Zaiido/capstone-fe?color=56BEB8" /> -->
 </p>
 
-<!-- Status -->
+Status
 
-<!-- <h4 align="center">
+<h4 align="center">
 	🚧  Capstone FE 🚀 Under construction...  🚧
 </h4>
 
-<hr> -->
+<hr>
 
 <p align="center">
   <a href="#dart-about">About</a> &#xa0; | &#xa0; 
   <a href="#sparkles-features">Features</a> &#xa0; | &#xa0;
   <a href="#rocket-technologies">Technologies</a> &#xa0; | &#xa0;
-  <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
   <a href="#checkered_flag-starting">Starting</a> &#xa0; | &#xa0;
   <a href="#memo-license">License</a> &#xa0; | &#xa0;
   <a href="https://github.com/Zaiido" target="_blank">Author</a>
@@ -46,7 +43,11 @@
 
 ## :dart: About
 
-Describe your project
+This is a web application for plant identification and disease diagnosis. The platform allows users to create a profile using their email, Google, or Facebook account, and create a virtual garden with their plants. Users can follow each other and communicate with each other about their plants, share tips and advice, and get help when their plants are sick.
+
+The application uses an API that accepts images from users and provides feedback on the plant name and any diseases it may have. Users can also post images of their plants for feedback from other users. The platform's communication features enable users to interact with each other, share ideas, and support one another in their plant-growing endeavors.
+
+Whether you're an experienced gardener or just getting started, this platform provides a wealth of resources and a supportive community to help you grow healthy and thriving plants.
 
 ## :sparkles: Features
 
