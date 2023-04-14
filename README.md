@@ -22,9 +22,8 @@
   <!-- <img alt="Github stars" src="https://img.shields.io/github/stars/Zaiido/capstone-fe?color=56BEB8" /> -->
 </p>
 
-Status
-
 <h4 align="center">
+Status
 	🚧  Capstone FE 🚀 Under construction...  🚧
 </h4>
 
