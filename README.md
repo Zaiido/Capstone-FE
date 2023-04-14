@@ -63,7 +63,7 @@ Whether you're an experienced gardener or just getting started, this platform pr
 The following tools are used in this project:
 
 - [Node.js](https://nodejs.org/en/)
-- [React](https://pt-br.reactjs.org/)
+- [React](https://react.dev/)
 <!-- - [TypeScript](https://www.typescriptlang.org/) -->
 
 ## :memo: License
