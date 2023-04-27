@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Over+the+Rainbow&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap');
+
+.welcome-section {
+    /* background-color: #d8f3dc; */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: white;
+    font-family: 'Comforter Brush';
+    overflow: hidden;
+}
+
+.welcome-section h1 {
+    font-size: 170px;
+    z-index: 2;
+}
+
+.leaf-img {
+    position: absolute;
+    width: 75%;
+    rotate: -100deg;
+    left: 200px;
+    /* opacity: 0.7; */
+    animation: loading 4s linear infinite alternate;
+}
+
+.bird-img {
+    width: 200px;
+    rotate: -20deg;
+    position: absolute;
+    right: 190px;
+    top: 140px;
+}
+
+
+@media (min-width: 1200px) and (max-width: 1400px) {
+    .bird-img {
+        top: 275px;
+        right: 120px;
+    }
+}
+
+
+@media (min-width: 1200px) and (max-width: 1400px) and (max-height: 900px) {
+    .bird-img {
+        top: 200px;
+        right: 120px;
+    }
+}
+
+
+.welcome-section-sm {
+    background-color: #90a955;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: white;
+    font-family: 'Over the Rainbow';
+    font-family: 'Comforter Brush';
+    overflow: hidden;
+}
+
+.loader {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+    margin: 15px auto;
+    position: relative;
+    color: #FFF;
+    box-sizing: border-box;
+    animation: animloader 1s linear infinite alternate;
+}
+
+@keyframes animloader {
+    0% {
+        box-shadow: -38px -12px, -14px 0, 14px 0, 38px 0;
+    }
+
+    33% {
+        box-shadow: -38px 0px, -14px -12px, 14px 0, 38px 0;
+    }
+
+    66% {
+        box-shadow: -38px 0px, -14px 0, 14px -12px, 38px 0;
+    }
+
+    100% {
+        box-shadow: -38px 0, -14px 0, 14px 0, 38px -12px;
+    }
+}
