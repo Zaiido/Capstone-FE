@@ -1,8 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Over+the+Rainbow&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap');
 
 .welcome-section {
-    /* background-color: #d8f3dc; */
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -24,7 +22,6 @@
     width: 75%;
     rotate: -100deg;
     left: 200px;
-    /* opacity: 0.7; */
     animation: loading 4s linear infinite alternate;
 }
 
