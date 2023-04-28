@@ -1,19 +1,33 @@
-import { Row, Col, Form, Button, Container, InputGroup, FormControl } from "react-bootstrap"
-import "../../css/login.css"
-import { FaKey, FaFacebookSquare, FaGoogle } from "react-icons/fa";
+import { useState } from "react"
+import { Row, Col, Container, Form, InputGroup, FormControl, Button } from "react-bootstrap"
+import { FaUserCircle, FaKey, FaFacebookSquare, FaGoogle } from "react-icons/fa"
 import { AiOutlineMail } from 'react-icons/ai'
-import { Link } from "react-router-dom";
-import { useState } from "react";
-const Login = () => {
+import { Link } from "react-router-dom"
+import '../../css/register.css'
+
+const Register = () => {
     const [isFBHovered, setIsFBHovered] = useState(false)
     const [isGoogleHovered, setIsGoogleHovered] = useState(false)
+
 
     return (
         <div className="login-section d-flex justify-content-center align-items-center">
             <Row className="login-container">
+                <Col className="img-bg col-12 col-lg-6 d-none d-lg-block">
+                    <img src="./assets/login/cover.jpg" alt="Plant" />
+                </Col>
                 <Col className="col-12 col-lg-6 d-flex justify-content-center align-items-center">
                     <Container className="mt-md-5 mx-md-5 px-md-5 d-flex flex-column">
                         <Form className="mt-5 mb-2 mt-md-0 mb-md-4 d-flex flex-column align-items-center">
+                            <InputGroup className="mb-3">
+                                <InputGroup.Prepend>
+                                    <InputGroup.Text> <FaUserCircle /> </InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <FormControl
+                                    placeholder="Username"
+                                    className="remove-box-shadow"
+                                />
+                            </InputGroup>
                             <InputGroup className="mb-3">
                                 <InputGroup.Prepend>
                                     <InputGroup.Text> <AiOutlineMail /> </InputGroup.Text>
@@ -34,9 +48,9 @@ const Login = () => {
                                 />
                             </InputGroup>
                             <Button className="align-self-end login-btn" variant="primary" type="submit">
-                                LOGIN
+                                REGISTER
                             </Button>
-                            <Link className="align-self-start register-link" to={"/register"}>Register now</Link>
+                            <Link className="align-self-start mt-2 login-link" to={"/login"}>Already a member? Login instead</Link>
                         </Form>
                         <div className="d-flex align-items-center mt-1 mb-4">
                             <hr className="line" /> <span>or</span>  <hr className="line" />
@@ -53,7 +67,7 @@ const Login = () => {
                                     </InputGroup.Prepend>
                                     <FormControl
                                         className={isFBHovered ? "fb-btn text-center hover-fb" : "fb-btn text-center"}
-                                        value={"LOGIN WITH FACEBOOK"}
+                                        value={"REGISTER WITH FACEBOOK"}
                                     />
                                 </InputGroup>
                             </Link>
@@ -67,19 +81,16 @@ const Login = () => {
                                     </InputGroup.Prepend>
                                     <FormControl
                                         className={isGoogleHovered ? "google-btn text-center hover-google" : "google-btn text-center"}
-                                        value={"LOGIN WITH GOOGLE"}
+                                        value={"REGISTER WITH GOOGLE"}
                                     />
                                 </InputGroup>
                             </Link>
                         </div>
                     </Container>
                 </Col>
-                <Col className="img-bg col-12 col-lg-6 d-none d-lg-block">
-                    <img src="./assets/login/cover.jpg" alt="Plant" />
-                </Col>
             </Row>
         </div>
     )
 }
 
-export default Login
+export default Register
