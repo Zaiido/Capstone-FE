@@ -42,7 +42,7 @@ const Login = () => {
                             <hr className="line" /> <span>or</span>  <hr className="line" />
                         </div>
                         <div className="oauth-btns mb-4">
-                            <Link to={"/"}>
+                            <Link to={`${process.env.REACT_APP_BE_URL}/users/facebookLogin`}>
                                 <InputGroup className="mb-3">
                                     <InputGroup.Prepend>
                                         <InputGroup.Text
@@ -54,10 +54,12 @@ const Login = () => {
                                     <FormControl
                                         className={isFBHovered ? "fb-btn text-center hover-fb" : "fb-btn text-center"}
                                         value={"LOGIN WITH FACEBOOK"}
+                                        type="submit"
+
                                     />
                                 </InputGroup>
                             </Link>
-                            <Link to={"/"}>
+                            <Link to={`${process.env.REACT_APP_BE_URL}/users/googleLogin`}>
                                 <InputGroup className="mb-3">
                                     <InputGroup.Prepend>
                                         <InputGroup.Text
@@ -68,6 +70,7 @@ const Login = () => {
                                     <FormControl
                                         className={isGoogleHovered ? "google-btn text-center hover-google" : "google-btn text-center"}
                                         value={"LOGIN WITH GOOGLE"}
+                                        type="submit"
                                     />
                                 </InputGroup>
                             </Link>
