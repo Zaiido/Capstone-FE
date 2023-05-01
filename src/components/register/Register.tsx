@@ -1,13 +1,43 @@
 import { useState } from "react"
-import { Row, Col, Container, Form, InputGroup, FormControl, Button } from "react-bootstrap"
+import { Row, Col, Container, Form, InputGroup, FormControl, Button, Alert } from "react-bootstrap"
 import { FaUserCircle, FaKey, FaFacebookSquare, FaGoogle } from "react-icons/fa"
 import { AiOutlineMail } from 'react-icons/ai'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import '../../css/register.css'
+
 
 const Register = () => {
     const [isFBHovered, setIsFBHovered] = useState(false)
     const [isGoogleHovered, setIsGoogleHovered] = useState(false)
+    const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [alert, setAlert] = useState(false)
+    const [alertMessage, setAlertMessage] = useState("")
+    const navigate = useNavigate()
+
+
+    const handleRegister = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BE_URL}/users/register`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ username, email, password }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+            if (response.ok) {
+                navigate("/feed")
+            } else {
+                const errorMessage = await response.json()
+                setAlertMessage(errorMessage.message)
+                setAlert(true)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
     return (
@@ -18,6 +48,9 @@ const Register = () => {
                 </Col>
                 <Col className="col-12 col-lg-6 d-flex justify-content-center align-items-center">
                     <Container className="mt-md-5 mx-md-5 px-md-5 d-flex flex-column">
+                        {alert && <Alert style={{ fontSize: "12px", marginTop: "10px" }} variant="danger">
+                            {alertMessage}
+                        </Alert>}
                         <Form className="mt-5 mb-2 mt-md-0 mb-md-4 d-flex flex-column align-items-center">
                             <InputGroup className="mb-3">
                                 <InputGroup.Prepend>
@@ -26,6 +59,8 @@ const Register = () => {
                                 <FormControl
                                     placeholder="Username"
                                     className="remove-box-shadow"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
                                 />
                             </InputGroup>
                             <InputGroup className="mb-3">
@@ -35,6 +70,9 @@ const Register = () => {
                                 <FormControl
                                     placeholder="Email"
                                     className="remove-box-shadow"
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </InputGroup>
 
@@ -45,9 +83,16 @@ const Register = () => {
                                 <FormControl
                                     placeholder="Password"
                                     className="remove-box-shadow"
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                             </InputGroup>
-                            <Button className="align-self-end login-btn" variant="primary" type="submit">
+                            <Button className="align-self-end login-btn" variant="primary" type="submit"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    handleRegister()
+                                }}>
                                 REGISTER
                             </Button>
                             <Link className="align-self-start mt-2 login-link" to={"/login"}>Already a member? Login instead</Link>
