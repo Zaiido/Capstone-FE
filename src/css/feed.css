@@ -1,0 +1,74 @@
+.feed-body {
+    background-color: #EDEDE9;
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: #256C57 !important;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.navbar-brand .profile:hover,
+.nav-link:hover,
+.navbar svg:hover,
+.active {
+    color: rgb(241, 225, 195) !important;
+}
+
+.navbar svg {
+    width: 20px;
+}
+
+.navbar-brand .img-container {
+    overflow: hidden;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.navbar-brand .img-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.navbar-brand .username {
+    font-size: 15px;
+}
+
+.navbar .search-btn,
+.navbar .search-btn:active {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.navbar .search-bar {
+    font-size: 15px;
+}
+
+.navbar .search-bar:focus {
+    box-shadow: none !important;
+    border-color: #256C57 !important;
+}
+
+
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(176, 175, 175);
+}
