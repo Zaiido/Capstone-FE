@@ -28,7 +28,7 @@
 .img-bg img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 
 }
 
@@ -62,19 +62,19 @@
 }
 
 .login-btn {
-    background-color: #97C0A1;
-    border-color: #97C0A1;
+    background-color: #519087;
+    border-color: #519087;
 }
 
 .login-btn:hover,
 .login-btn:active {
-    background-color: #82a48a !important;
-    border-color: #82a48a !important;
+    background-color: #3D7F6C !important;
+    border-color: #3D7F6C !important;
 }
 
 .login-btn:focus {
-    background-color: #82a48a !important;
-    border-color: #82a48a !important;
+    background-color: #3D7F6C !important;
+    border-color: #3D7F6C !important;
     box-shadow: none !important;
 }
 

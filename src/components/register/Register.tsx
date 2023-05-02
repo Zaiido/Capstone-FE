@@ -14,8 +14,15 @@ const Register = () => {
     const [password, setPassword] = useState("")
     const [alert, setAlert] = useState(false)
     const [alertMessage, setAlertMessage] = useState("")
+    const [validEmail, setValidEmail] = useState(true)
     const navigate = useNavigate()
 
+    const isValidEmail = () => {
+        const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{1,}$/i;
+        const isValid = emailRegex.test(email);
+        setValidEmail(isValid)
+        console.log(isValid)
+    }
 
     const handleRegister = async () => {
         try {
@@ -44,7 +51,7 @@ const Register = () => {
         <div className="login-section d-flex justify-content-center align-items-center">
             <Row className="login-container">
                 <Col className="img-bg col-12 col-lg-6 d-none d-lg-block">
-                    <img src="./assets/login/cover.jpg" alt="Plant" />
+                    <img src="./assets/login/branch.jpg" alt="Plant" />
                 </Col>
                 <Col className="col-12 col-lg-6 d-flex justify-content-center align-items-center">
                     <Container className="mt-md-5 mx-md-5 px-md-5 d-flex flex-column">
@@ -61,18 +68,23 @@ const Register = () => {
                                     className="remove-box-shadow"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
+                                    required
                                 />
                             </InputGroup>
                             <InputGroup className="mb-3">
                                 <InputGroup.Prepend>
-                                    <InputGroup.Text> <AiOutlineMail /> </InputGroup.Text>
+                                    <InputGroup.Text className={validEmail ? "" : "not-valid-email"}> <AiOutlineMail /> </InputGroup.Text>
                                 </InputGroup.Prepend>
                                 <FormControl
                                     placeholder="Email"
-                                    className="remove-box-shadow"
+                                    className={validEmail ? "remove-box-shadow" : "remove-box-shadow not-valid-email"}
                                     type="email"
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value)
+                                        isValidEmail()
+                                    }}
+                                    required
                                 />
                             </InputGroup>
 
@@ -86,12 +98,28 @@ const Register = () => {
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    required
                                 />
                             </InputGroup>
                             <Button className="align-self-end login-btn" variant="primary" type="submit"
                                 onClick={(e) => {
                                     e.preventDefault()
-                                    handleRegister()
+                                    if (username.length === 0) {
+                                        setAlertMessage("Please enter your username!")
+                                        setAlert(true)
+                                    } else if (email.length === 0) {
+                                        setAlertMessage("Please enter your email!")
+                                        setAlert(true)
+                                    } else if (password.length === 0) {
+                                        setAlertMessage("Please choose a password!")
+                                        setAlert(true)
+                                    } else if (!validEmail) {
+                                        setAlertMessage("Please enter a valid email!")
+                                        setAlert(true)
+                                    }
+                                    if (validEmail && password.length !== 0) {
+                                        handleRegister()
+                                    }
                                 }}>
                                 REGISTER
                             </Button>

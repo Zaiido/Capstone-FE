@@ -8,3 +8,9 @@
     color: #337577;
     text-decoration: none;
 }
+
+.not-valid-email {
+    border-color: rgb(188, 88, 88) !important;
+    border-right-color: initial !important;
+    border-left-color: initial !important;
+}
