@@ -1,10 +1,10 @@
+html,
 .feed-body {
     background-color: #EDEDE9;
-    min-height: 100vh;
 }
 
 .navbar {
-    background-color: #256C57 !important;
+    background-color: #519087 !important;
 }
 
 .nav-link {
@@ -15,7 +15,7 @@
 .nav-link:hover,
 .navbar svg:hover,
 .active {
-    color: rgb(241, 225, 195) !important;
+    color: rgb(180, 167, 143) !important;
 }
 
 .navbar svg {
@@ -71,4 +71,177 @@
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgb(176, 175, 175);
+}
+
+.section-container {
+    background-color: white;
+    border-radius: 20px;
+}
+
+.post-icons {
+    width: 25px;
+    height: 25px;
+    fill: #519087;
+    cursor: pointer;
+}
+
+.post-icons:hover {
+    fill: rgb(180, 167, 143);
+}
+
+.file-modal .modal-body {
+    background-color: #EDEDE9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+    cursor: pointer;
+}
+
+.post-btn {
+    background-color: #519087;
+    border-color: #519087;
+}
+
+.post-btn:hover,
+.post-btn:active {
+    background-color: #3D7F6C !important;
+    border-color: #3D7F6C !important;
+}
+
+.post-btn:focus {
+    background-color: #3D7F6C !important;
+    border-color: #3D7F6C !important;
+    box-shadow: none !important;
+}
+
+.post-textarea,
+.post-textarea:focus {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+@media (min-width: 900px) {
+    .post-modal .modal-dialog {
+        max-width: 50%;
+        margin: 1.75rem auto;
+    }
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+}
+
+.post .img-container {
+    overflow: hidden;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.post .img-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.post .username {
+    font-size: 15px;
+}
+
+
+.media-container {
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.media-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.media-modal .modal-body img {
+    width: 100%;
+}
+
+.action-icons {
+    border-top: #EDEDE9 1px solid;
+}
+
+.action-btn:hover {
+    border-radius: 4px;
+    background-color: #EDEDE9;
+    cursor: pointer;
+}
+
+.post-actions-btn button {
+    background-color: white !important;
+    border-color: white !important;
+    box-shadow: none !important;
+}
+
+.post-actions-btn>div:first-of-type {
+    transform: translate3d(-115px, 41.6px, 0px) !important;
+}
+
+.reactions-container {
+    font-size: 13px;
+}
+
+.reactions-container svg {
+    width: 20px;
+    height: 20px;
+}
+
+.post-comments .img-container {
+    overflow: hidden;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.post-comments .img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-comments input {
+    box-shadow: none !important;
+}
+
+.post-comments input:focus {
+    border-color: #256C57 !important;
+}
+
+.post-comments .username {
+    font-weight: 600;
+}
+
+.post-comments .user-comment {
+    font-size: 14px;
+}
+
+.comment-icons {
+    width: 15px;
+    height: 15px;
+}
+
+.comments-number:hover {
+    color: #3D7F6C;
+    cursor: pointer;
+}
+
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-footer {
+    border-top: none;
 }
