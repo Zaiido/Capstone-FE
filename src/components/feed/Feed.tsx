@@ -4,6 +4,8 @@ import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap"
 import { useRef, useState } from "react";
 import Post from "./Post";
 import { AiOutlineCamera, AiOutlineVideoCamera, AiOutlinePlusCircle } from 'react-icons/ai'
+import Suggestion from "./Suggestion";
+import Request from "./Request";
 
 const Feed = () => {
     const [show, setShow] = useState(false);
@@ -70,10 +72,19 @@ const Feed = () => {
                         <Post />
                     </Col>
                     <Col className="col-12 col-md-4 d-none d-md-block">
-                        <div className="section-container p-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium ad fuga distinctio aspernatur impedit atque, quas sint excepturi quibusdam quasi tempora nobis nisi repudiandae perferendis ab suscipit harum consequatur! Dicta?
-                            Sunt voluptas sapiente omnis placeat quo laboriosam aspernatur, eius quaerat illo, et qui ut? Maxime vitae consequatur vero, assumenda nisi deserunt vel illum necessitatibus, incidunt molestias saepe labore error iusto!
-                            Iure harum consequatur in, autem delectus quasi possimus, officia voluptates repellat veritatis deserunt. Dolor nisi id odio nobis, molestias laborum voluptate natus laboriosam similique numquam autem veniam amet, a quasi.
-                            Delectus dolorum a est ullam culpa? Dolorem laudantium, ducimus ullam corporis inventore quasi facere tempora distinctio veritatis obcaecati exercitationem dolores sed ipsum? Laboriosam, ut? Veniam error quod sit assumenda odit.
+                        <div className="section-container mb-3 p-4">
+                            <p>Follow Requests</p>
+                            <Request />
+                            <Request />
+                            <Request />
+                            <Request />
+                        </div>
+                        <div className="section-container mb-3 p-4">
+                            <p>Suggestions</p>
+                            <Suggestion />
+                            <Suggestion />
+                            <Suggestion />
+                            <Suggestion />
                         </div>
                     </Col>
                 </Row>
