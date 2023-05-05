@@ -25,6 +25,8 @@ const Login = () => {
                     }
                 })
             if (response.ok) {
+                const { accessToken } = await response.json()
+                localStorage.setItem("accessToken", accessToken)
                 navigate("/feed")
             } else {
                 const errorMessage = await response.json()

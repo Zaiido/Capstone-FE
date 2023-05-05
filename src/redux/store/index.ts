@@ -1,6 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import localStorage from "redux-persist/es/storage";
+import myProfileReducer from "../reducers/myProfileReducer";
+import allProfilesReducer from "../reducers/allProfilesReducer";
+import receivedRequestsReducer from "../reducers/receivedRequestsReducer";
+import sentRequestsReducer from "../reducers/sentRequestsReducer";
+import followingReducer from "../reducers/followingReducer";
 
 
 const persistConfig = {
@@ -8,7 +13,14 @@ const persistConfig = {
     key: "root"
 }
 
-const combinedReducer = combineReducers({})
+const combinedReducer = combineReducers({
+    myProfile: myProfileReducer,
+    allProfiles: allProfilesReducer,
+    receivedRequests: receivedRequestsReducer,
+    sentRequests: sentRequestsReducer,
+    following: followingReducer
+})
+
 const persistedReducer = persistReducer(persistConfig, combinedReducer)
 
 

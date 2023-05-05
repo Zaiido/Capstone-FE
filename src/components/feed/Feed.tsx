@@ -1,16 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import TheNavbar from "./TheNavbar"
 import '../../css/feed.css'
 import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap"
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Post from "./Post";
 import { AiOutlineCamera, AiOutlineVideoCamera, AiOutlinePlusCircle } from 'react-icons/ai'
 import Suggestion from "./Suggestion";
 import Request from "./Request";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import Cookies from "js-cookie";
+import { fetchAllProfilesAction, fetchFollowingAction, fetchMyProfileAction, fetchReceivedRequestsAction, fetchSentRequestsAction } from "../../redux/actions";
+import { IUser } from "../../interfaces/IUser";
+import { IRequest } from "../../interfaces/IRequest";
 
 const Feed = () => {
     const [show, setShow] = useState(false);
     const [showFileModal, setShowFileModal] = useState(false);
     const [fileType, setFileType] = useState("")
+    const [reloadPage, setReloadPage] = useState(false)
+    const dispatch = useAppDispatch()
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -43,12 +51,42 @@ const Feed = () => {
         }
     };
 
+    const allProfiles = useAppSelector(state => state.allProfiles.results)
+    const myProfile = useAppSelector(state => state.myProfile.results)
+    const receivedRequests = useAppSelector(state => state.receivedRequests.results)
+    const following = useAppSelector(state => state.following.results)
+
+    useEffect(() => {
+        const tokenCookie = Cookies.get("accessToken");
+        if (tokenCookie) {
+            dispatch(fetchMyProfileAction(tokenCookie));
+            dispatch(fetchAllProfilesAction(tokenCookie));
+        } else {
+            const accessToken = localStorage.getItem("accessToken");
+            dispatch(fetchMyProfileAction(accessToken as string));
+            dispatch(fetchAllProfilesAction(accessToken as string));
+        }
+    }, [reloadPage]);
+
+
+    useEffect(() => {
+        if (myProfile && !Array.isArray(myProfile)) {
+            const tokenCookie = Cookies.get("accessToken") || localStorage.getItem("accessToken");
+            dispatch(fetchReceivedRequestsAction(myProfile._id, tokenCookie as string));
+            dispatch(fetchSentRequestsAction(myProfile._id, tokenCookie as string));
+            dispatch(fetchFollowingAction(myProfile._id, tokenCookie as string));
+        }
+
+    }, [myProfile, reloadPage]);
+
+
+
     return (
         <div className="feed-body">
             <TheNavbar />
             <Container className="my-4">
                 <Row>
-                    <Col className="col-12 col-md-8 pr-5">
+                    <Col className="col-12 col-md-8 pr-lg-5">
                         <Row className="mb-5">
                             <Col className="col-12">
                                 <div className="section-container px-4 py-3">
@@ -74,17 +112,12 @@ const Feed = () => {
                     <Col className="col-12 col-md-4 d-none d-md-block">
                         <div className="section-container mb-3 p-4">
                             <p>Follow Requests</p>
-                            <Request />
-                            <Request />
-                            <Request />
-                            <Request />
+                            {receivedRequests && receivedRequests.length === 0 ? <p style={{ fontSize: "13px" }}>You have no requests!</p> : receivedRequests.slice(0, 4).map((user: IRequest, i: number) => <Request user={user} key={i} setReloadPage={setReloadPage} reloadPage={reloadPage} />)}
+
                         </div>
                         <div className="section-container mb-3 p-4">
                             <p>Suggestions</p>
-                            <Suggestion />
-                            <Suggestion />
-                            <Suggestion />
-                            <Suggestion />
+                            {allProfiles && myProfile && following && allProfiles.filter((profile: IUser) => profile._id !== myProfile._id && !following.some((user: IRequest) => user._id === profile._id)).slice(0, 4).map((profile: IUser) => <Suggestion key={profile._id} profile={profile} reloadPage={reloadPage} setReloadPage={setReloadPage} />)}
                         </div>
                     </Col>
                 </Row>
