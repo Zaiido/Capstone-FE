@@ -120,7 +120,7 @@ const Comment = ({ comment, postId, setReload, reload }: IProps) => {
                     <div className="username">{comment.user.username}</div>
                     {myProfile && comment.user._id === myProfile._id &&
                         <DropdownButton
-                            className="post-actions-btn ml-auto"
+                            className="post-actions-btn ml-auto actions"
                             key='down'
                             id='dropdown-button-drop-down'
                             drop='down'

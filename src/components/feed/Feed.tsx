@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import TheNavbar from "./TheNavbar"
+import TheNavbar from "../navbar/TheNavbar"
 import '../../css/feed.css'
 import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap"
 import { useEffect, useRef, useState } from "react";

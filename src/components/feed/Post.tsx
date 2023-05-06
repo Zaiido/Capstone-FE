@@ -30,6 +30,7 @@ const Post = (props: IProps) => {
     const [postText, setPostText] = useState(props.post.text)
     const [comments, setComments] = useState<IComment[]>([])
     const [commentToPost, setCommentToPost] = useState("")
+    const [repostText, setRepostText] = useState("")
 
     const myProfile = useAppSelector(state => state.myProfile.results)
     const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken");
@@ -59,6 +60,7 @@ const Post = (props: IProps) => {
             console.log(error)
         }
     }
+
 
     const likeOrDislike = async () => {
         try {
@@ -165,6 +167,38 @@ const Post = (props: IProps) => {
 
 
 
+    const repostPost = async () => {
+        try {
+            let text;
+            if (repostText === "") {
+                text = " "
+            }
+            else {
+                text = repostText
+            }
+            let response = await fetch(`${process.env.REACT_APP_BE_URL}/posts`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({ "user": myProfile._id, text: text, repost: props.post._id }),
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+            if (response.ok) {
+                setRepostText("")
+                props.setReloadPage(!props.reloadPage)
+            } else {
+                console.log("Try harder!");
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
     useEffect(() => {
         getLikes()
         getComments()
@@ -183,11 +217,12 @@ const Post = (props: IProps) => {
                                 </div>
                                 <div className="username">
                                     {props.post.user.username}
+                                    {props.post.repost && <div style={{ fontSize: "12px" }}>Reposted from {props.post.repost.user.username}</div>}
                                 </div>
                                 {myProfile && myProfile._id === props.post.user._id &&
                                     <div className="ml-auto">
                                         <DropdownButton
-                                            className="post-actions-btn"
+                                            className="post-actions-btn actions"
                                             key='down'
                                             id='dropdown-button-drop-down'
                                             drop='down'
@@ -232,6 +267,23 @@ const Post = (props: IProps) => {
                                     {props.post.text && props.post.text}
                                 </div>
                             }
+                            {props.post.repost && <div className="repost-container my-2 p-3">
+                                {props.post.repost?.image &&
+                                    <img
+                                        onClick={(e) => { setImgSrc(e.currentTarget.src); handleShow() }}
+                                        src={props.post.repost.image} alt="Post" />}
+                                {props.post.repost?.video &&
+                                    <>
+                                        <video width="100%" height="240" controls>
+                                            <source src={props.post.repost.video} type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </>}
+                                {
+                                    props.post.repost?.text && props.post.repost?.text !== " " &&
+                                    <span>{props.post.repost.text}</span>
+                                }
+                            </div>}
                             <div className="d-flex align-items-center justify-content-between reactions-container my-3">
                                 <div className="d-flex align-items-center"><AiFillLike className="post-icons mr-2" />{likesNumber}</div>
                                 <div className="comments-number" onClick={() => setCommentsShow(!commentsShow)}>{comments ? `${comments.length} Comments` : "No comments"}</div>
@@ -285,15 +337,22 @@ const Post = (props: IProps) => {
             </Modal>
             <Modal className="repost-modal" show={showRepostModal} onHide={handleCloseRepostModal}>
                 <Modal.Header closeButton>
+                    You are sharing a post from: {props.post.user.username}
                 </Modal.Header>
                 <Modal.Body>
-                    Are you sure you want to repost this?
+                    <Form.Group className="my-3">
+                        <Form.Control as="textarea" value={repostText} onChange={(e) => setRepostText(e.target.value)} className="post-textarea" type="text" placeholder="Add something to the post..." />
+                    </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseRepostModal}>
                         Cancel
                     </Button>
-                    <Button className="post-btn" onClick={handleCloseRepostModal}>
+                    <Button className="post-btn"
+                        onClick={() => {
+                            handleCloseRepostModal()
+                            repostPost()
+                        }}>
                         Repost
                     </Button>
                 </Modal.Footer>
