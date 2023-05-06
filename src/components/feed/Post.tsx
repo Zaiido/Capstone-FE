@@ -8,6 +8,7 @@ import { IPost } from "../../interfaces/IPost"
 import { useAppSelector } from "../../redux/hooks"
 import Cookies from "js-cookie"
 import { IRequest } from "../../interfaces/IRequest"
+import { IComment } from "../../interfaces/IComment"
 
 
 interface IProps {
@@ -25,10 +26,9 @@ const Post = (props: IProps) => {
     const [likesNumber, setLikesNumber] = useState("")
     const [allLikes, setAllLikes] = useState<IRequest[]>([])
     const [liked, setLiked] = useState(false)
-
-
     const [postToEdit, setPostToEdit] = useState(false)
     const [postText, setPostText] = useState(props.post.text)
+    const [comments, setComments] = useState<IComment[]>([])
 
     const myProfile = useAppSelector(state => state.myProfile.results)
     const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken");
@@ -122,9 +122,29 @@ const Post = (props: IProps) => {
     }
 
 
+    const getComments = async () => {
+        try {
+            let response = await fetch(`${process.env.REACT_APP_BE_URL}/posts/${props.post._id}/comments`,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            );
+            if (response.ok) {
+                const comments = await response.json()
+                setComments(comments)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
 
     useEffect(() => {
         getLikes()
+        getComments()
     }, [liked])
 
 
@@ -191,7 +211,7 @@ const Post = (props: IProps) => {
                             }
                             <div className="d-flex align-items-center justify-content-between reactions-container my-3">
                                 <div className="d-flex align-items-center"><AiFillLike className="post-icons mr-2" />{likesNumber}</div>
-                                <div className="comments-number" onClick={() => setCommentsShow(!commentsShow)}>2 Comments</div>
+                                <div className="comments-number" onClick={() => setCommentsShow(!commentsShow)}>{comments ? `${comments.length} Comments` : "No comments"}</div>
                             </div>
                         </div>
                         <div className="d-flex justify-content-between mt-2 p-3 action-icons">
@@ -212,7 +232,7 @@ const Post = (props: IProps) => {
                         {commentsShow && <div className="post-comments">
                             <div className="d-flex">
                                 <div className="img-container">
-                                    <img src="./assets/feed/cactus-avatar.jpg" alt="Avatar" />
+                                    <img src={myProfile && myProfile.avatar} alt="Avatar" />
                                 </div>
                                 <Form className="w-100">
                                     <Form.Group>
@@ -221,7 +241,7 @@ const Post = (props: IProps) => {
                                 </Form>
                             </div>
                             <div className="all-comments">
-                                <Comment />
+                                {comments && comments.map((comment) => <Comment key={comment._id} comment={comment} />)}
                             </div>
                         </div>}
                     </div>

@@ -278,3 +278,7 @@ html,
 .dropdown-item:active {
     background-color: #519087;
 }
+
+.dropdown-toggle::after {
+    display: none;
+}
