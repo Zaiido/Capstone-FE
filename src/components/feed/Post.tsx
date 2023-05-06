@@ -25,7 +25,7 @@ const Post = (props: IProps) => {
     const [commentsShow, setCommentsShow] = useState(false)
     const [likesNumber, setLikesNumber] = useState("")
     const [allLikes, setAllLikes] = useState<IRequest[]>([])
-    const [liked, setLiked] = useState(false)
+    const [reload, setReload] = useState(false)
     const [postToEdit, setPostToEdit] = useState(false)
     const [postText, setPostText] = useState(props.post.text)
     const [comments, setComments] = useState<IComment[]>([])
@@ -73,7 +73,7 @@ const Post = (props: IProps) => {
                 }
             );
             if (response.ok) {
-                setLiked(!liked)
+                setReload(!reload)
             }
 
         } catch (error) {
@@ -155,7 +155,7 @@ const Post = (props: IProps) => {
                 }
             );
             if (response.ok) {
-                setLiked(!liked)
+                setReload(!reload)
             }
         } catch (error) {
             console.log(error)
@@ -168,7 +168,7 @@ const Post = (props: IProps) => {
     useEffect(() => {
         getLikes()
         getComments()
-    }, [liked])
+    }, [reload])
 
 
     return (
@@ -268,7 +268,7 @@ const Post = (props: IProps) => {
                                 </Form>
                             </div>
                             <div className="all-comments">
-                                {comments && comments.map((comment) => <Comment key={comment._id} comment={comment} />)}
+                                {comments && comments.map((comment) => <Comment key={comment._id} comment={comment} postId={props.post._id} reload={reload} setReload={setReload} />)}
                             </div>
                         </div>}
                     </div>

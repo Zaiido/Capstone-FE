@@ -273,6 +273,7 @@ html,
     background-color: #EDEDE9;
     border-radius: 4px;
     color: #519087;
+    cursor: pointer;
 }
 
 .dropdown-item:active {
@@ -281,4 +282,10 @@ html,
 
 .dropdown-toggle::after {
     display: none;
+}
+
+.like-comment:hover {
+    background-color: #EDEDE9;
+    border-radius: 4px;
+    cursor: pointer;
 }
