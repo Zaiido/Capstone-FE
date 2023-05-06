@@ -29,6 +29,7 @@ const Post = (props: IProps) => {
     const [postToEdit, setPostToEdit] = useState(false)
     const [postText, setPostText] = useState(props.post.text)
     const [comments, setComments] = useState<IComment[]>([])
+    const [commentToPost, setCommentToPost] = useState("")
 
     const myProfile = useAppSelector(state => state.myProfile.results)
     const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken");
@@ -141,6 +142,28 @@ const Post = (props: IProps) => {
     }
 
 
+    const postComment = async () => {
+        try {
+            let response = await fetch(`${process.env.REACT_APP_BE_URL}/posts/${props.post._id}/comments`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({ comment: commentToPost, user: myProfile._id }),
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+            if (response.ok) {
+                setLiked(!liked)
+            }
+        } catch (error) {
+            console.log(error)
+
+        }
+    }
+
+
 
     useEffect(() => {
         getLikes()
@@ -234,9 +257,13 @@ const Post = (props: IProps) => {
                                 <div className="img-container">
                                     <img src={myProfile && myProfile.avatar} alt="Avatar" />
                                 </div>
-                                <Form className="w-100">
+                                <Form className="w-100" onSubmit={(e) => {
+                                    e.preventDefault()
+                                    postComment()
+                                    setCommentToPost("")
+                                }}>
                                     <Form.Group>
-                                        <Form.Control className="badge-pill" type="text" placeholder="Add a comment" />
+                                        <Form.Control value={commentToPost} onChange={(e) => setCommentToPost(e.target.value)} className="badge-pill" type="text" placeholder="Add a comment" />
                                     </Form.Group>
                                 </Form>
                             </div>
