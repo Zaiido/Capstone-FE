@@ -6,6 +6,7 @@ import allProfilesReducer from "../reducers/allProfilesReducer";
 import receivedRequestsReducer from "../reducers/receivedRequestsReducer";
 import sentRequestsReducer from "../reducers/sentRequestsReducer";
 import followingReducer from "../reducers/followingReducer";
+import allPostsReducer from "../reducers/allPostsReducer";
 
 
 const persistConfig = {
@@ -18,7 +19,8 @@ const combinedReducer = combineReducers({
     allProfiles: allProfilesReducer,
     receivedRequests: receivedRequestsReducer,
     sentRequests: sentRequestsReducer,
-    following: followingReducer
+    following: followingReducer,
+    allPosts: allPostsReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, combinedReducer)

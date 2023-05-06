@@ -4,7 +4,7 @@ import { AiOutlineSearch } from 'react-icons/ai'
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 import { useNavigate } from "react-router-dom"
 import Cookies from "js-cookie"
-import { CLEAR_ALL_PROFILES, CLEAR_FOLLOWING, CLEAR_MY_PROFILE, CLEAR_RECEIVED_REQUESTS, CLEAR_SENT_REQUESTS } from "../../redux/actions"
+import { CLEAR_ALL_POSTS, CLEAR_ALL_PROFILES, CLEAR_FOLLOWING, CLEAR_MY_PROFILE, CLEAR_RECEIVED_REQUESTS, CLEAR_SENT_REQUESTS } from "../../redux/actions"
 
 const TheNavbar = () => {
     const [showSearchBar, setShowSearchBar] = useState(false)
@@ -22,6 +22,7 @@ const TheNavbar = () => {
         dispatch({ type: CLEAR_RECEIVED_REQUESTS })
         dispatch({ type: CLEAR_SENT_REQUESTS })
         dispatch({ type: CLEAR_FOLLOWING })
+        dispatch({ type: CLEAR_ALL_POSTS })
         navigate("/login")
     }
 

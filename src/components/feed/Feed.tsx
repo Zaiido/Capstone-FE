@@ -9,21 +9,35 @@ import Suggestion from "./Suggestion";
 import Request from "./Request";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Cookies from "js-cookie";
-import { fetchAllProfilesAction, fetchFollowingAction, fetchMyProfileAction, fetchReceivedRequestsAction, fetchSentRequestsAction } from "../../redux/actions";
+import { fetchAllPostsAction, fetchAllProfilesAction, fetchFollowingAction, fetchMyProfileAction, fetchReceivedRequestsAction, fetchSentRequestsAction } from "../../redux/actions";
 import { IUser } from "../../interfaces/IUser";
 import { IRequest } from "../../interfaces/IRequest";
+import { IPost } from "../../interfaces/IPost";
 
 const Feed = () => {
     const [show, setShow] = useState(false);
     const [showFileModal, setShowFileModal] = useState(false);
     const [fileType, setFileType] = useState("")
+    const [text, setText] = useState("")
+    const [file, setFile] = useState<File | null>(null);
     const [reloadPage, setReloadPage] = useState(false)
     const dispatch = useAppDispatch()
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setText("")
+        setFile(null)
+        setShow(false)
+    };
     const handleShow = () => setShow(true);
-    const handleFileModalClose = () => setShowFileModal(false);
-    const handleFileModalShow = () => setShowFileModal(true);
+    const handleFileModalClose = () => {
+        setText("")
+        setFile(null)
+        setShowFileModal(false)
+    };
+    const handleFileModalShow = () => {
+        setText("")
+        setShowFileModal(true)
+    };
 
 
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -51,7 +65,84 @@ const Feed = () => {
         }
     };
 
+
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            setFile(files[0]);
+        } else {
+            setFile(null);
+        }
+    };
+
+    const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken");
+
+    const handleSubmitTextOnly = async () => {
+        try {
+            let response = await fetch(`${process.env.REACT_APP_BE_URL}/posts`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({ text, "user": myProfile._id }),
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+            if (response.ok) {
+                setText("")
+                setReloadPage(!reloadPage)
+            } else {
+                console.log("Try harder!");
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleSubmit = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("user", myProfile._id)
+            let endpoint;
+
+            if (file && file.type.includes("image")) {
+                formData.append("postImage", file);
+                endpoint = "image"
+            } else if (file && file.type.includes("video")) {
+                formData.append("postVideo", file);
+                endpoint = "video"
+            } else {
+                await handleSubmitTextOnly()
+                return
+            }
+
+            if (text === "") {
+                formData.append("text", " ")
+            } else {
+                formData.append("text", text)
+            }
+
+            let response = await fetch(`${process.env.REACT_APP_BE_URL}/posts/${endpoint}`,
+                {
+                    method: "POST",
+                    body: formData,
+                    headers: { "Authorization": `Bearer ${accessToken}` }
+                }
+            );
+            if (response.ok) {
+                setText("")
+                setReloadPage(!reloadPage)
+            } else {
+                console.log("Try harder!");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const allProfiles = useAppSelector(state => state.allProfiles.results)
+    const allPosts = useAppSelector(state => state.allPosts.results)
     const myProfile = useAppSelector(state => state.myProfile.results)
     const receivedRequests = useAppSelector(state => state.receivedRequests.results)
     const following = useAppSelector(state => state.following.results)
@@ -61,10 +152,12 @@ const Feed = () => {
         if (tokenCookie) {
             dispatch(fetchMyProfileAction(tokenCookie));
             dispatch(fetchAllProfilesAction(tokenCookie));
+            dispatch(fetchAllPostsAction(tokenCookie));
         } else {
             const accessToken = localStorage.getItem("accessToken");
             dispatch(fetchMyProfileAction(accessToken as string));
             dispatch(fetchAllProfilesAction(accessToken as string));
+            dispatch(fetchAllPostsAction(accessToken as string));
         }
     }, [reloadPage]);
 
@@ -98,6 +191,7 @@ const Feed = () => {
                                                 id="file-upload"
                                                 ref={fileInputRef}
                                                 style={{ display: 'none' }}
+                                                onChange={handleFileUpload}
                                             />
                                             <AiOutlineCamera className="post-icons mx-2" onClick={() => { handleIconClick("image/*"); setFileType("image/*"); handleFileModalShow() }} />
                                             <AiOutlineVideoCamera className="post-icons mx-2" onClick={() => { handleIconClick("video/*"); setFileType("video/*"); handleFileModalShow() }} />
@@ -106,8 +200,7 @@ const Feed = () => {
                                 </div>
                             </Col>
                         </Row>
-                        <Post />
-                        <Post />
+                        {allPosts && allPosts.slice().reverse().map((post: IPost) => <Post post={post} key={post._id} reloadPage={reloadPage} setReloadPage={setReloadPage} />)}
                     </Col>
                     <Col className="col-12 col-md-4 d-none d-md-block">
                         <div className="section-container mb-3 p-4">
@@ -127,25 +220,30 @@ const Feed = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Group controlId="exampleForm.ControlTextarea1">
-                        <Form.Control placeholder="What do you have in mind?" className="post-textarea" as="textarea" rows={4} />
+                        <Form.Control value={text} onChange={(e) => setText(e.target.value)} placeholder="What do you have in mind?" className="post-textarea" as="textarea" rows={4} />
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <div className="mr-auto">
+                    <div className="mr-auto d-flex align-items-center">
                         <input
                             type="file"
                             id="file-upload"
                             ref={fileInputRef3}
                             style={{ display: 'none' }}
+                            onChange={handleFileUpload}
                         />
                         <AiOutlineCamera className="post-icons mx-2" onClick={() => { handleModalIconClick("image/*"); setFileType("image/*"); }} />
                         <AiOutlineVideoCamera className="post-icons mx-2" onClick={() => { handleModalIconClick("video/*"); setFileType("video/*"); }} />
+                        {file && <div style={{ fontSize: "13px" }}>{file.name}</div>}
 
                     </div>
                     <Button variant="secondary" onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button className="post-btn" onClick={handleClose}>
+                    <Button className="post-btn" onClick={async () => {
+                        await handleSubmit()
+                        handleClose()
+                    }}>
                         Post
                     </Button>
                 </Modal.Footer>
@@ -160,14 +258,19 @@ const Feed = () => {
                         id="file-upload"
                         ref={fileInputRef2}
                         style={{ display: 'none' }}
+                        onChange={handleFileUpload}
                     />
                     <AiOutlinePlusCircle className="post-icons" />
                 </Modal.Body>
                 <Modal.Footer>
+                    {file && <div style={{ fontSize: "13px" }}>{file.name}</div>}
                     <Button variant="secondary" onClick={handleFileModalClose}>
                         Cancel
                     </Button>
-                    <Button className="post-btn" onClick={handleFileModalClose}>
+                    <Button className="post-btn" onClick={async () => {
+                        await handleSubmit()
+                        handleFileModalClose()
+                    }}>
                         Post
                     </Button>
                 </Modal.Footer>

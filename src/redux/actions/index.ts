@@ -12,6 +12,8 @@ export const GET_SENT_REQUESTS = "GET_SENT_REQUESTS"
 export const CLEAR_SENT_REQUESTS = "CLEAR_SENT_REQUESTS"
 export const GET_FOLLOWING = "GET_FOLLOWING"
 export const CLEAR_FOLLOWING = "CLEAR_FOLLOWING"
+export const GET_ALL_POSTS = "GET_ALL_POSTS"
+export const CLEAR_ALL_POSTS = "CLEAR_ALL_POSTS"
 
 
 
@@ -129,6 +131,31 @@ export const fetchFollowingAction = (userId: string, accessToken: string) => {
             if (response.ok) {
                 let allFollowing = await response.json();
                 dispatch({ type: GET_FOLLOWING, payload: allFollowing });
+            } else {
+                console.log("Error");
+            }
+        } catch (error) {
+            console.log(error);
+
+        };
+    }
+};
+
+
+export const fetchAllPostsAction = (accessToken: string) => {
+    return async (dispatch: Dispatch) => {
+        try {
+            let response = await fetch(
+                `${process.env.REACT_APP_BE_URL}/posts`,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            );
+            if (response.ok) {
+                let allPosts = await response.json();
+                dispatch({ type: GET_ALL_POSTS, payload: allPosts });
             } else {
                 console.log("Error");
             }
