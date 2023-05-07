@@ -205,7 +205,7 @@ const Feed = () => {
                     <Col className="col-12 col-md-4 d-none d-md-block">
                         <div className="section-container mb-3 p-4">
                             <p>Follow Requests</p>
-                            {receivedRequests && receivedRequests.length === 0 ? <p style={{ fontSize: "13px" }}>You have no requests!</p> : receivedRequests.slice(0, 4).map((user: IRequest, i: number) => <Request user={user} key={i} setReloadPage={setReloadPage} reloadPage={reloadPage} />)}
+                            {receivedRequests && receivedRequests.length === 0 ? <p style={{ fontSize: "13px" }}>You have no new requests!</p> : receivedRequests.slice(0, 4).map((user: IRequest, i: number) => <Request user={user} key={i} setReloadPage={setReloadPage} reloadPage={reloadPage} />)}
 
                         </div>
                         <div className="section-container mb-3 p-4">

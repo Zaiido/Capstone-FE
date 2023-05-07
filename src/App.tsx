@@ -6,6 +6,7 @@ import Welcome from './components/welcome/Welcome';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
 import Feed from './components/feed/Feed';
+import Network from './components/network/Network';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route element={<Login />} path='/login' />
         <Route element={<Register />} path='/register' />
         <Route element={<Feed />} path='/feed' />
+        <Route element={<Network />} path='/network' />
       </Routes>
     </BrowserRouter>
   );

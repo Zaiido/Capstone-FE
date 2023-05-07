@@ -1,0 +1,18 @@
+.network-number {
+    font-weight: 600;
+}
+
+.remove-text {
+    font-size: 13px;
+    color: rgb(174, 101, 101);
+}
+
+.remove-text:hover {
+    cursor: pointer;
+    color: rgb(200, 60, 60);
+}
+
+.network-container {
+    height: 210px;
+    overflow-y: auto;
+}

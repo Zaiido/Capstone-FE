@@ -12,7 +12,7 @@ const Suggestion = (props: IProps) => {
     const tokenCookie = Cookies.get("accessToken");
 
 
-    const sendConnectionRequest = async (receiverId: string) => {
+    const sendFollowRequest = async (receiverId: string) => {
         const url = `${process.env.REACT_APP_BE_URL}/users/${myProfile._id}/sendRequest`;
         try {
             const response = await fetch(url, {
@@ -43,7 +43,7 @@ const Suggestion = (props: IProps) => {
             <div className="username">
                 {props.profile.username}
             </div>
-            <div className="follow-text ml-auto" onClick={() => sendConnectionRequest(props.profile._id)}>
+            <div className="follow-text ml-auto" onClick={() => sendFollowRequest(props.profile._id)}>
                 {myProfile?.sentRequests?.pending.includes(props.profile._id) ?
                     "Cancel" : "Follow"}
             </div>
