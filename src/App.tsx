@@ -7,6 +7,7 @@ import Login from './components/login/Login';
 import Register from './components/register/Register';
 import Feed from './components/feed/Feed';
 import Network from './components/network/Network';
+import Messages from './components/messages/Messages';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route element={<Register />} path='/register' />
         <Route element={<Feed />} path='/feed' />
         <Route element={<Network />} path='/network' />
+        <Route element={<Messages />} path='/messages' />
       </Routes>
     </BrowserRouter>
   );

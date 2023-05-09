@@ -36,7 +36,7 @@ const Suggestion = (props: IProps) => {
     };
 
     return (
-        <div className="d-flex align-items-center my-2">
+        <div className="d-flex new-chat p-2 align-items-center my-2">
             <div className="img-container">
                 <img src={props.profile.avatar} alt="Avatar" />
             </div>

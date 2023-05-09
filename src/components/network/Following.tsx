@@ -39,7 +39,7 @@ const Following = ({ user, reloadPage, setReloadPage }: IProps) => {
 
     return (
         <>
-            <div className="d-flex align-items-center my-3">
+            <div className="d-flex new-chat p-2 align-items-center my-3">
                 <div className="img-container">
                     <img src={user.avatar} alt="Avatar" />
                 </div>

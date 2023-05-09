@@ -55,7 +55,7 @@ const Network = () => {
                         <Row>
                             <Col className="col-12">
                                 <div className="section-container mb-3 p-4">
-                                    <div>
+                                    <div className="ml-2">
                                         <span className="mr-3">People you follow</span>
                                         <span className="network-number">{following && following.length}</span>
                                     </div>
@@ -68,7 +68,7 @@ const Network = () => {
                         <Row>
                             <Col className="col-12">
                                 <div className="section-container mb-3 p-4">
-                                    <div>
+                                    <div className="ml-2">
                                         <span className="mr-3">People that follow you</span>
                                         <span className="network-number">{followers && followers.length}</span>
                                     </div>
@@ -83,7 +83,7 @@ const Network = () => {
                         <Row>
                             <Col className="col-12">
                                 <div className="section-container mb-3 p-4">
-                                    <div>
+                                    <div className="ml-2">
                                         <span className="mr-3">Follow Requests</span>
                                         <span className="network-number">{receivedRequests && receivedRequests.length}</span>
                                     </div>
@@ -96,7 +96,7 @@ const Network = () => {
                         <Row>
                             <Col className="col-12">
                                 <div className="section-container mb-3 p-4">
-                                    <div>
+                                    <div className="ml-2">
                                         <span className="mr-3">Suggestions</span>
                                     </div>
                                     <div className="network-container">

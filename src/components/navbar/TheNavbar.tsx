@@ -47,7 +47,7 @@ const TheNavbar = () => {
                     <Nav className="ml-auto mr-2">
                         <Nav.Link href="/feed">Home</Nav.Link>
                         <Nav.Link href="/network">Network</Nav.Link>
-                        <Nav.Link href="#messages">Messages</Nav.Link>
+                        <Nav.Link href="/messages">Messages</Nav.Link>
                         <Nav.Link href="#garden">Garden</Nav.Link>
 
                     </Nav>
