@@ -16,6 +16,12 @@ export const GET_ALL_POSTS = "GET_ALL_POSTS"
 export const CLEAR_ALL_POSTS = "CLEAR_ALL_POSTS"
 export const GET_FOLLOWERS = "GET_FOLLOWERS"
 export const CLEAR_FOLLOWERS = "CLEAR_FOLLOWERS"
+export const GET_ALL_CHATS = "GET_ALL_CHATS"
+export const CLEAR_ALL_CHATS = "CLEAR_ALL_CHATS"
+export const GET_ACTIVE_CHAT = "GET_ACTIVE_CHAT"
+export const CLEAR_ACTIVE_CHAT = "CLEAR_ACTIVE_CHAT"
+export const SET_LIVE_CHAT = "GET_LIVE_CHAT"
+export const CLEAR_LIVE_CHAT = "CLEAR_LIVE_CHAT"
 
 
 
@@ -184,6 +190,56 @@ export const fetchFollowersAction = (userId: string, accessToken: string) => {
             if (response.ok) {
                 let allFollowers = await response.json();
                 dispatch({ type: GET_FOLLOWERS, payload: allFollowers });
+            } else {
+                console.log("Error");
+            }
+        } catch (error) {
+            console.log(error);
+
+        };
+    }
+};
+
+
+export const fetchAllChatsAction = (userId: string, accessToken: string) => {
+    return async (dispatch: Dispatch) => {
+        try {
+            let response = await fetch(
+                `${process.env.REACT_APP_BE_URL}/chats/personalChats/${userId}`,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            );
+            if (response.ok) {
+                let allChats = await response.json();
+                dispatch({ type: GET_ALL_CHATS, payload: allChats });
+            } else {
+                console.log("Error");
+            }
+        } catch (error) {
+            console.log(error);
+
+        };
+    }
+};
+
+
+export const fetchActiveChatAction = (chatId: string, accessToken: string) => {
+    return async (dispatch: Dispatch) => {
+        try {
+            let response = await fetch(
+                `${process.env.REACT_APP_BE_URL}/chats/${chatId}`,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            );
+            if (response.ok) {
+                let activeChat = await response.json();
+                dispatch({ type: GET_ACTIVE_CHAT, payload: activeChat });
             } else {
                 console.log("Error");
             }

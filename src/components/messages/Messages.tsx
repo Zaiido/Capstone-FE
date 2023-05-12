@@ -4,24 +4,35 @@ import TheNavbar from "../navbar/TheNavbar"
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 import { useEffect, useState } from "react"
 import Cookies from "js-cookie"
-import { fetchFollowingAction, fetchMyProfileAction } from "../../redux/actions"
+import { fetchAllChatsAction, fetchFollowingAction, fetchMyProfileAction } from "../../redux/actions"
 import { IRequest } from "../../interfaces/IRequest"
 import { AiOutlineCamera, AiOutlineVideoCamera } from 'react-icons/ai'
 import NewChat from "./NewChat"
 import '../../css/messages.css'
 import Chat from "./Chat"
 import SingleMessage from "./SingleMessage"
+import { IChat } from "../../interfaces/IChat"
+import { io } from 'socket.io-client'
+import { IMessage } from "../../interfaces/IMessage"
+import uniqid from 'uniqid'
+
+const socket = io(process.env.REACT_APP_BE_URL!, { transports: ["websocket"] });
 
 const Messages = () => {
+
+    const [reloadPage, setReloadPage] = useState(false)
+
     const myProfile = useAppSelector(state => state.myProfile.results)
     const following = useAppSelector(state => state.following.results)
-    const [reloadPage, setReloadPage] = useState(false)
+    const allChats = useAppSelector(state => state.allChats.results)
+    const activeChat = useAppSelector(state => state.activeChat.results)
 
     const dispatch = useAppDispatch()
 
+    const [allMessages, setAllMessages] = useState<IMessage[]>([])
+    const [messageText, setMessageText] = useState("")
 
     useEffect(() => {
-
         const tokenCookie = Cookies.get("accessToken");
         if (tokenCookie) {
             dispatch(fetchMyProfileAction(tokenCookie));
@@ -29,15 +40,55 @@ const Messages = () => {
             const accessToken = localStorage.getItem("accessToken");
             dispatch(fetchMyProfileAction(accessToken as string));
         }
-    }, [reloadPage]);
+
+        // SOCKET IO
+        socket.emit("joinRoom", activeChat._id)
+        socket.on("roomName", (roomName) => {
+            console.log(roomName)
+        })
+
+        socket.on("newMessage", (newMessage) => {
+            const isDuplicate = allMessages.some(
+                (message) => message.manualId === newMessage.message.manualId
+            );
+
+            if (!isDuplicate) {
+                setAllMessages((allMessages) => [...allMessages, newMessage.message])
+            }
+        })
+
+        return () => {
+            socket.off("newMessage");
+        }
+    }, [dispatch, activeChat])
+
+    const sendNewMessage = () => {
+        const newMessage = {
+            manualId: uniqid(),
+            sender: myProfile._id,
+            text: messageText,
+            createdAt: new Date().toLocaleString("en-GB"),
+        };
+        socket.emit("sendMessage", { message: newMessage });
+        const isDuplicate = allMessages.some(
+            (message) => message.manualId === newMessage.manualId
+        );
+
+        if (!isDuplicate) {
+            setAllMessages([...allMessages, newMessage])
+        }
+
+    };
 
     useEffect(() => {
         if (myProfile && !Array.isArray(myProfile)) {
-            const tokenCookie = Cookies.get("accessToken") || localStorage.getItem("accessToken");
-            dispatch(fetchFollowingAction(myProfile._id, tokenCookie as string));
+            const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken");
+            dispatch(fetchFollowingAction(myProfile._id, accessToken as string));
+            dispatch(fetchAllChatsAction(myProfile._id, accessToken as string))
         }
+        console.log(activeChat)
 
-    }, [myProfile, reloadPage]);
+    }, [myProfile, dispatch]);
 
 
     return (
@@ -53,7 +104,7 @@ const Messages = () => {
                                         <span className="ml-2">Chats</span>
                                     </div>
                                     <div className="network-container">
-                                        {following && following.map((user: IRequest) => <Chat key={user._id} reloadPage={reloadPage} setReloadPage={setReloadPage} user={user} />)}
+                                        {allChats && allChats.map((chat: IChat) => <Chat key={chat._id} reloadPage={reloadPage} setReloadPage={setReloadPage} chat={chat} />)}
                                     </div>
                                 </div>
                             </Col>
@@ -65,7 +116,16 @@ const Messages = () => {
                                         <span className="ml-2">Start a new chat</span>
                                     </div>
                                     <div className="network-container">
-                                        {following && following.map((user: IRequest) => <NewChat key={user._id} reloadPage={reloadPage} setReloadPage={setReloadPage} user={user} />)}
+                                        {following &&
+                                            following.filter((user: IRequest) =>
+                                                !allChats.some((chat: IChat) =>
+                                                    chat.members.length === 2 &&
+                                                    chat.members.some((member: IRequest) => member._id === user._id) &&
+                                                    chat.members.some((member: IRequest) => member._id === myProfile._id)
+                                                )
+                                            ).map((user: IRequest) => (
+                                                <NewChat key={user._id} reloadPage={reloadPage} setReloadPage={setReloadPage} user={user} />
+                                            ))}
                                     </div>
                                 </div>
                             </Col>
@@ -76,7 +136,8 @@ const Messages = () => {
                             <Col className="col-12">
                                 <div className="section-container mb-3 p-4">
                                     <div className="messages-container d-flex flex-column">
-                                        <SingleMessage />
+                                        {activeChat && activeChat.messages?.map((message: IMessage) => <SingleMessage message={message} />)}
+                                        {allMessages && allMessages.map((message: IMessage) => <p>{message.text}</p>)}
                                     </div>
                                 </div>
                             </Col>
@@ -87,7 +148,7 @@ const Messages = () => {
                                     <div className="send-message-container">
                                         <div className="d-flex flex-column">
                                             <Form.Group controlId="exampleForm.ControlTextarea1">
-                                                <Form.Control placeholder="Message..." className="post-textarea" as="textarea" rows={2} />
+                                                <Form.Control placeholder="Message..." value={messageText} onChange={(e) => setMessageText(e.target.value)} className="post-textarea" as="textarea" rows={2} />
                                             </Form.Group>
                                             <div className="d-flex align-items-center px-1 mt-3">
                                                 <input
@@ -99,7 +160,13 @@ const Messages = () => {
                                                 />
                                                 <AiOutlineCamera className="post-icons mx-2" />
                                                 <AiOutlineVideoCamera className="post-icons mx-2" />
-                                                <Button className="login-btn ml-auto mr-3">Send</Button>
+                                                <Button className="login-btn ml-auto mr-3"
+                                                    onClick={(e) => {
+                                                        sendNewMessage()
+                                                    }
+                                                    }
+                                                >
+                                                    Send</Button>
                                             </div>
                                         </div>
                                     </div>

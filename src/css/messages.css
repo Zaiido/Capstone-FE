@@ -4,6 +4,12 @@
     cursor: pointer;
 }
 
+.active-chat {
+    background-color: #EDEDE9;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 .online-dot {
     width: 8px;
     height: 8px;
@@ -29,4 +35,10 @@
 
 .single-message-container .time {
     font-size: 12px;
+}
+
+.single-message-username {
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: #337577;
 }
