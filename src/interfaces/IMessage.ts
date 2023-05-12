@@ -4,6 +4,7 @@ export interface IMessage {
     manualId: string,
     sender: IRequest,
     text: string,
-    media?: string,
+    image?: string,
+    video?: string,
     createdAt: string
 }

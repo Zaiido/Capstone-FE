@@ -33,8 +33,8 @@ const Chat = ({ chat, reloadPage, setReloadPage }: IProps) => {
                 <div className="username">
                     {chat.name && myProfile ? chat.name : chat.members.find((user: IRequest) => user._id !== myProfile._id)?.username || ''}
                 </div>
-                <div className="online-dot ml-auto">
-                </div>
+                {/* <div className="online-dot ml-auto">
+                </div> */}
             </div>
         </>
     )

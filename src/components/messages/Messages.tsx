@@ -2,7 +2,7 @@
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import TheNavbar from "../navbar/TheNavbar"
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Cookies from "js-cookie"
 import { fetchAllChatsAction, fetchFollowingAction, fetchMyProfileAction } from "../../redux/actions"
 import { IRequest } from "../../interfaces/IRequest"
@@ -20,17 +20,74 @@ const socket = io(process.env.REACT_APP_BE_URL!, { transports: ["websocket"] });
 
 const Messages = () => {
 
-    const [reloadPage, setReloadPage] = useState(false)
 
     const myProfile = useAppSelector(state => state.myProfile.results)
     const following = useAppSelector(state => state.following.results)
     const allChats = useAppSelector(state => state.allChats.results)
     const activeChat = useAppSelector(state => state.activeChat.results)
+    const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken");
 
     const dispatch = useAppDispatch()
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
 
     const [allMessages, setAllMessages] = useState<IMessage[]>([])
     const [messageText, setMessageText] = useState("")
+    const [reloadPage, setReloadPage] = useState(false)
+    const [file, setFile] = useState<File | null>(null);
+
+
+
+
+
+    const handleIconClick = (accept: string) => {
+        if (fileInputRef.current) {
+            fileInputRef.current.accept = accept;
+            fileInputRef.current.click();
+        }
+    };
+
+
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            setFile(files[0]);
+        } else {
+            setFile(null);
+        }
+    };
+
+    const getMediaUrl = async () => {
+        try {
+            const formData = new FormData();
+            let endpoint;
+
+            if (file && file.type.includes("image")) {
+                formData.append("messageImage", file);
+                endpoint = "image"
+            } else if (file && file.type.includes("video")) {
+                formData.append("messageVideo", file);
+                endpoint = "video"
+            }
+
+            let response = await fetch(`${process.env.REACT_APP_BE_URL}/chats/messages/${endpoint}`,
+                {
+                    method: "POST",
+                    body: formData,
+                    headers: { "Authorization": `Bearer ${accessToken}` }
+                }
+            );
+            if (response.ok) {
+                let url = await response.json()
+                return url
+            } else {
+                console.log("Try harder!");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
     useEffect(() => {
         const tokenCookie = Cookies.get("accessToken");
@@ -62,13 +119,40 @@ const Messages = () => {
         }
     }, [dispatch, activeChat])
 
-    const sendNewMessage = () => {
-        const newMessage = {
-            manualId: uniqid(),
-            sender: myProfile._id,
-            text: messageText,
-            createdAt: new Date().toLocaleString("en-GB"),
-        };
+    const sendNewMessage = async () => {
+        let newMessage: any;
+        if (file) {
+            let url = await getMediaUrl()
+            if (url.imageUrl) {
+                newMessage = {
+                    manualId: uniqid(),
+                    sender: myProfile._id,
+                    text: messageText,
+                    createdAt: new Date().toLocaleString("en-GB"),
+                    video: "",
+                    image: url.imageUrl
+                };
+            } else if (url.videoUrl) {
+                newMessage = {
+                    manualId: uniqid(),
+                    sender: myProfile._id,
+                    text: messageText,
+                    createdAt: new Date().toLocaleString("en-GB"),
+                    video: url.videoUrl,
+                    image: ""
+                };
+            }
+        } else {
+            newMessage = {
+                manualId: uniqid(),
+                sender: myProfile._id,
+                text: messageText,
+                createdAt: new Date().toLocaleString("en-GB"),
+                video: "",
+                image: ""
+            }
+        }
+
         socket.emit("sendMessage", { message: newMessage });
         const isDuplicate = allMessages.some(
             (message) => message.manualId === newMessage.manualId
@@ -78,6 +162,7 @@ const Messages = () => {
             setAllMessages([...allMessages, newMessage])
         }
         setMessageText("")
+        setFile(null)
     };
 
     useEffect(() => {
@@ -156,12 +241,13 @@ const Messages = () => {
                                                 <input
                                                     type="file"
                                                     id="file-upload"
-                                                    // ref={fileInputRef}
+                                                    ref={fileInputRef}
                                                     style={{ display: 'none' }}
-                                                // onChange={handleFileUpload}
+                                                    onChange={handleFileUpload}
                                                 />
-                                                <AiOutlineCamera className="post-icons mx-2" />
-                                                <AiOutlineVideoCamera className="post-icons mx-2" />
+                                                <AiOutlineCamera className="post-icons mx-2" onClick={() => { handleIconClick("image/*") }} />
+                                                <AiOutlineVideoCamera className="post-icons mx-2" onClick={() => { handleIconClick("video/*") }} />
+                                                {file && <div style={{ fontSize: "13px" }}>{file.name}</div>}
                                                 <Button className="login-btn ml-auto mr-3"
                                                     onClick={(e) => {
                                                         sendNewMessage()
