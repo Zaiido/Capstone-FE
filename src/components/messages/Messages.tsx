@@ -53,7 +53,7 @@ const Messages = () => {
             );
 
             if (!isDuplicate) {
-                setAllMessages((allMessages) => [...allMessages, newMessage.message])
+                setAllMessages((allMessages) => [...allMessages, newMessage])
             }
         })
 
@@ -77,7 +77,7 @@ const Messages = () => {
         if (!isDuplicate) {
             setAllMessages([...allMessages, newMessage])
         }
-
+        setMessageText("")
     };
 
     useEffect(() => {
@@ -86,10 +86,12 @@ const Messages = () => {
             dispatch(fetchFollowingAction(myProfile._id, accessToken as string));
             dispatch(fetchAllChatsAction(myProfile._id, accessToken as string))
         }
-        console.log(activeChat)
 
     }, [myProfile, dispatch]);
 
+    useEffect(() => {
+        setAllMessages([])
+    }, [reloadPage])
 
     return (
         <div className="feed-body">
@@ -136,8 +138,8 @@ const Messages = () => {
                             <Col className="col-12">
                                 <div className="section-container mb-3 p-4">
                                     <div className="messages-container d-flex flex-column">
-                                        {activeChat && activeChat.messages?.map((message: IMessage) => <SingleMessage message={message} />)}
-                                        {allMessages && allMessages.map((message: IMessage) => <p>{message.text}</p>)}
+                                        {activeChat && activeChat.messages?.map((message: IMessage) => <SingleMessage message={message} historyChat={true} />)}
+                                        {allMessages && allMessages.map((message: IMessage) => <SingleMessage message={message} historyChat={false} />)}
                                     </div>
                                 </div>
                             </Col>
