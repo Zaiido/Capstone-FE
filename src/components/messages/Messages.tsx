@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Col, Container, Form, Row } from "react-bootstrap"
+import { Button, Col, Container, Form, FormControl, InputGroup, Modal, Row } from "react-bootstrap"
 import TheNavbar from "../navbar/TheNavbar"
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 import { useEffect, useRef, useState } from "react"
 import Cookies from "js-cookie"
-import { fetchAllChatsAction, fetchFollowingAction, fetchMyProfileAction } from "../../redux/actions"
+import { fetchActiveChatAction, fetchAllChatsAction, fetchFollowingAction, fetchMyProfileAction } from "../../redux/actions"
 import { IRequest } from "../../interfaces/IRequest"
-import { AiOutlineCamera, AiOutlineVideoCamera } from 'react-icons/ai'
+import { AiOutlineCamera, AiOutlineVideoCamera, AiOutlineWechat, AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai'
 import NewChat from "./NewChat"
 import '../../css/messages.css'
 import Chat from "./Chat"
@@ -35,7 +35,13 @@ const Messages = () => {
     const [messageText, setMessageText] = useState("")
     const [reloadPage, setReloadPage] = useState(false)
     const [file, setFile] = useState<File | null>(null);
+    const [show, setShow] = useState(false);
+    const [groupIds, setGroupIds] = useState<string[]>([])
+    const [groupName, setGroupName] = useState("")
+    const [loading, setLoading] = useState(false)
 
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
 
 
@@ -120,6 +126,7 @@ const Messages = () => {
     }, [dispatch, activeChat])
 
     const sendNewMessage = async () => {
+        setLoading(true)
         let newMessage: any;
         if (file) {
             let url = await getMediaUrl()
@@ -163,6 +170,7 @@ const Messages = () => {
         }
         setMessageText("")
         setFile(null)
+        setLoading(false)
     };
 
     useEffect(() => {
@@ -178,6 +186,31 @@ const Messages = () => {
         setAllMessages([])
     }, [reloadPage])
 
+
+    const startNewChat = async () => {
+        try {
+            let response = await fetch(`${process.env.REACT_APP_BE_URL}/chats`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({ group: [...groupIds, myProfile._id], name: groupName }),
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    }
+                })
+            if (response.ok) {
+                let chat = await response.json()
+                await dispatch(fetchActiveChatAction(chat._id, accessToken as string))
+                setReloadPage(!reloadPage)
+            } else {
+                console.log("Error creating a new chat")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     return (
         <div className="feed-body">
             <TheNavbar />
@@ -187,8 +220,9 @@ const Messages = () => {
                         <Row>
                             <Col className="col-12">
                                 <div className="section-container mb-3 p-4">
-                                    <div>
+                                    <div className="d-flex align-items-center">
                                         <span className="ml-2">Chats</span>
+                                        <AiOutlineWechat className="post-icons ml-auto" onClick={handleShow} />
                                     </div>
                                     <div className="network-container">
                                         {allChats && allChats.map((chat: IChat) => <Chat key={chat._id} reloadPage={reloadPage} setReloadPage={setReloadPage} chat={chat} />)}
@@ -234,6 +268,7 @@ const Messages = () => {
                                 <div className="section-container mb-3 p-4">
                                     <div className="send-message-container">
                                         <div className="d-flex flex-column">
+                                            {loading && <div className="loader-container"><span className="message-loader"></span></div>}
                                             <Form.Group controlId="exampleForm.ControlTextarea1">
                                                 <Form.Control placeholder="Message..." value={messageText} onChange={(e) => setMessageText(e.target.value)} className="post-textarea" as="textarea" rows={2} />
                                             </Form.Group>
@@ -264,6 +299,47 @@ const Messages = () => {
                     </Col>
                 </Row>
             </Container>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>New Group Chat</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <InputGroup size="sm" className="mb-3">
+                        <InputGroup.Prepend>
+                            <InputGroup.Text id="inputGroup-sizing-sm">Group name</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl className="group-name" value={groupName} onChange={(e) => setGroupName(e.target.value)} aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+                    </InputGroup>
+                    {following && following.map((user: IRequest) =>
+                        <div key={user._id} className="d-flex align-items-center my-1 p-2 new-chat">
+                            <div className="img-container">
+                                <img src={user.avatar} alt="Avatar" />
+                            </div>
+                            <div className="username">
+                                {user.username}
+                            </div>
+                            {groupIds.includes(user._id) ?
+                                <div className="ml-auto">
+                                    <AiOutlineMinusCircle className="post-icons ignore-icon" onClick={() => setGroupIds(groupIds.filter(groupId => groupId !== user._id))} />
+                                </div> :
+                                <div className="ml-auto">
+                                    <AiOutlinePlusCircle className="post-icons" onClick={() => setGroupIds(groupIds => [...groupIds, user._id])} />
+                                </div>}
+                        </div>)}
+                </Modal.Body>
+                <Modal.Footer className="d-flex">
+                    <Button variant="secondary" onClick={handleClose}>
+                        Cancel
+                    </Button>
+                    <Button className="post-btn"
+                        onClick={async () => {
+                            await startNewChat()
+                            handleClose()
+                        }}>
+                        Create Group
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

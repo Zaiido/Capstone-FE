@@ -19,7 +19,6 @@ const SingleMessage = ({ message, historyChat }: IProps) => {
                         <div className="single-message-container d-flex flex-column p-2 align-self-end">
                             <span className="single-message-username"></span>
                             <span>{message?.text}</span>
-                            <div className="time ml-auto">{message?.createdAt}</div>
                             {message.image && <img src={message.image} alt="Message" />}
                             {message.video && <>
                                 <video width="100%" height="240" controls>
@@ -27,13 +26,13 @@ const SingleMessage = ({ message, historyChat }: IProps) => {
                                     Your browser does not support the video tag.
                                 </video>
                             </>}
+                            <div className="time ml-auto mt-1">{message?.createdAt}</div>
                         </div>
 
                     </div> :
                     <div className="d-flex ml-auto mt-2">
                         <div className="single-message-container d-flex flex-column p-2 align-self-end">
                             <span>{message?.text}</span>
-                            <div className="time ml-auto">{message?.createdAt}</div>
                             {message.image && <img src={message.image} alt="Message" />}
                             {message.video && <>
                                 <video width="100%" height="240" controls>
@@ -41,6 +40,7 @@ const SingleMessage = ({ message, historyChat }: IProps) => {
                                     Your browser does not support the video tag.
                                 </video>
                             </>}
+                            <div className="time ml-auto mt-1">{message?.createdAt}</div>
                         </div>
                     </div>
                 :
@@ -53,7 +53,6 @@ const SingleMessage = ({ message, historyChat }: IProps) => {
                             <div className="single-message-container d-flex flex-column p-2 align-self-end">
                                 <span className="single-message-username"></span>
                                 <span>{message?.text}</span>
-                                <div className="time ml-auto">{message?.createdAt}</div>
                                 {message.image && <img src={message.image} alt="Message" />}
                                 {message.video && <>
                                     <video width="100%" height="240" controls>
@@ -61,13 +60,13 @@ const SingleMessage = ({ message, historyChat }: IProps) => {
                                         Your browser does not support the video tag.
                                     </video>
                                 </>}
+                                <div className="time ml-auto mt-1">{message?.createdAt}</div>
                             </div>
                         </div>}
                     {myProfile && message?.sender && message.sender === myProfile._id &&
                         <div className="d-flex ml-auto mt-2">
                             <div className="single-message-container d-flex flex-column p-2 align-self-end">
                                 <span>{message?.text}</span>
-                                <div className="time ml-auto">{message?.createdAt}</div>
                                 {message.image && <img src={message.image} alt="Message" />}
                                 {message.video && <>
                                     <video width="100%" height="240" controls>
@@ -75,6 +74,7 @@ const SingleMessage = ({ message, historyChat }: IProps) => {
                                         Your browser does not support the video tag.
                                     </video>
                                 </>}
+                                <div className="time ml-auto mt-1">{message?.createdAt}</div>
                             </div>
                         </div>}
                 </>}
