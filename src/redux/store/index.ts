@@ -11,6 +11,7 @@ import followersReducer from "../reducers/followersReducer";
 import allChatsReducer from "../reducers/allChatsReducer";
 import activeChatReducer from "../reducers/activeChatReducer";
 import liveChatReducer from "../reducers/liveChatReducer";
+import gardenReducer from "../reducers/gardenReducer";
 
 
 const persistConfig = {
@@ -28,7 +29,8 @@ const combinedReducer = combineReducers({
     followers: followersReducer,
     allChats: allChatsReducer,
     activeChat: activeChatReducer,
-    liveChat: liveChatReducer
+    liveChat: liveChatReducer,
+    garden: gardenReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, combinedReducer)

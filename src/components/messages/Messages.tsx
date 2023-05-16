@@ -283,7 +283,7 @@ const Messages = () => {
                                                 <AiOutlineCamera className="post-icons mx-2" onClick={() => { handleIconClick("image/*") }} />
                                                 <AiOutlineVideoCamera className="post-icons mx-2" onClick={() => { handleIconClick("video/*") }} />
                                                 {file && <div style={{ fontSize: "13px" }}>{file.name}</div>}
-                                                <Button className="login-btn ml-auto mr-3"
+                                                <Button className="post-btn ml-auto mr-3"
                                                     onClick={(e) => {
                                                         sendNewMessage()
                                                     }
