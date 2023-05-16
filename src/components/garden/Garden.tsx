@@ -8,6 +8,7 @@ import SingleMatch from "./SingleMatch";
 import Cookies from "js-cookie";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { fetchGarden } from "../../redux/actions";
+import SingleDiagnose from "./SingleDiagnose";
 
 const Garden = () => {
 
@@ -16,11 +17,15 @@ const Garden = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const myProfile = useAppSelector(state => state.myProfile.results)
-    const dispatch = useAppDispatch()
+    const myGarden = useAppSelector(state => state.garden.results)
     const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken");
+    const dispatch = useAppDispatch()
 
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState("");
+    const [url, setUrl] = useState("")
+    const [reloadPage, setReloadPage] = useState(false)
     const [results, setResults] = useState<any[]>([])
+    const [diagnoseResults, setDiagnoseResults] = useState<any[]>([])
 
 
     const handleIconClick = () => {
@@ -60,12 +65,43 @@ const Garden = () => {
                 }
             );
             if (response.ok) {
-                let { data } = await response.json()
-                console.log(data.results.slice(0, 10))
+                let { data, imageUrl } = await response.json()
                 setResults(data.results.slice(0, 10))
+                setUrl(imageUrl)
             }
         }
         catch (error) {
+            console.log(error)
+        }
+    }
+
+    const diagnosePlant = async () => {
+        try {
+            const options = {
+                api_key: process.env.REACT_APP_DIAGNOSE_API_KEY,
+                images: [image],
+                modifiers: ["crops_fast", "similar_images"],
+                language: "en",
+                disease_details: ["cause",
+                    "common_names",
+                    "classification",
+                    "description",
+                    "treatment",
+                    "url"],
+            };
+            let response = await fetch(`${process.env.REACT_APP_DIAGNOSE_API_URL}`,
+                {
+                    method: "POST",
+                    body: JSON.stringify(options),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+            if (response.ok) {
+                let data = await response.json()
+                setDiagnoseResults(data.health_assessment.diseases.slice(0, 4))
+            }
+        } catch (error) {
             console.log(error)
         }
     }
@@ -75,7 +111,7 @@ const Garden = () => {
             const tokenCookie = Cookies.get("accessToken") || localStorage.getItem("accessToken");
             dispatch(fetchGarden(myProfile._id, tokenCookie as string));
         }
-    }, [myProfile]);
+    }, [myProfile, reloadPage]);
 
 
     return (
@@ -116,7 +152,7 @@ const Garden = () => {
                             </div>
                             <div className="d-flex justify-content-between mt-3 garden-btn-container">
                                 <div className="garden-btn w-100 d-flex justify-content-center p-2" onClick={identifyPlant}>Identify</div>
-                                <div className="garden-btn w-100 d-flex justify-content-center p-2">Diagnose</div>
+                                <div className="garden-btn w-100 d-flex justify-content-center p-2" onClick={diagnosePlant}>Diagnose</div>
                             </div>
                         </div>
                     </Col>
@@ -126,7 +162,27 @@ const Garden = () => {
                         <div className="section-container px-4 py-3">
                             <h4 className="text-center mb-5">Matches</h4>
                             <Row>
-                                {results && results.map((result, i) => <SingleMatch key={i} result={result} />)}
+                                {results && results.map((result, i) => <SingleMatch key={i} result={result} imageUrl={url} reloadPage={reloadPage} setReloadPage={setReloadPage} />)}
+                            </Row>
+                        </div>
+                    </Col>
+                </Row>}
+                {diagnoseResults.length > 0 && <Row className="my-5">
+                    <Col className="col-12">
+                        <div className="section-container px-4 py-3">
+                            <h4 className="text-center mb-5">Matches</h4>
+                            <Row>
+                                {diagnoseResults && diagnoseResults.map((result, i) => <SingleDiagnose key={i} result={result} />)}
+                                <Col className="col-12">
+                                    <h4 className="advice">Treatment</h4>
+                                    <p className="my-2 advice">Biological: </p>
+                                    {diagnoseResults[0].disease_details.treatment.biological?.map((advice: any, i: any) =>
+                                        <li key={i}>{advice}</li>)}
+                                    <p className="my-2 advice">Chemical: </p> {diagnoseResults[0].disease_details.treatment.chemical?.map((advice: any, i: any) =>
+                                        <li key={i}>{advice}</li>)}
+                                    <p className="my-2 advice">Prevention: </p> {diagnoseResults[0].disease_details.treatment.prevention?.map((advice: any, i: any) =>
+                                        <li key={i}>{advice}</li>)}
+                                </Col>
                             </Row>
                         </div>
                     </Col>
@@ -134,14 +190,7 @@ const Garden = () => {
                 <div className="my-garden">
                     <h4 className="text-center my-5">My Garden</h4>
                     <Row className="mt-5 mx-0">
-                        <SinglePlant />
-                        <SinglePlant />
-                        <SinglePlant />
-                        <SinglePlant />
-                        <SinglePlant />
-                        <SinglePlant />
-                        <SinglePlant />
-                        <SinglePlant />
+                        {myGarden && myGarden.map((plant: any) => <SinglePlant plant={plant} />)}
                     </Row>
                 </div>
             </Container>

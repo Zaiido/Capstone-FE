@@ -118,9 +118,10 @@
 }
 
 .plant-img-container {
-    height: 70px;
-    width: 70px;
+    height: 90px;
+    width: 90px;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .plant-img-container img {
@@ -149,4 +150,29 @@
 .garden-actions {
     position: absolute;
     right: 0;
+}
+
+.diagnose-container .card {
+    border: none;
+}
+
+
+.diagnose-container .card img {
+    height: 300px;
+    border-radius: 0;
+}
+
+.diagnose-container .card-body {
+    height: 250px;
+}
+
+.advice {
+    font-weight: 600;
+}
+
+.line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
