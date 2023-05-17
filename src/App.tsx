@@ -9,6 +9,7 @@ import Feed from './components/feed/Feed';
 import Network from './components/network/Network';
 import Messages from './components/messages/Messages';
 import Garden from './components/garden/Garden';
+import Profile from './components/profile/Profile';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route element={<Network />} path='/network' />
         <Route element={<Messages />} path='/messages' />
         <Route element={<Garden />} path='/garden' />
+        <Route element={<Profile />} path='/profile' />
       </Routes>
     </BrowserRouter>
   );

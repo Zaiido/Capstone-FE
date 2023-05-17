@@ -2,6 +2,7 @@ import { Col } from "react-bootstrap"
 import { AiFillPlusCircle } from "react-icons/ai"
 import { useAppSelector } from "../../redux/hooks";
 import Cookies from "js-cookie";
+import { useState } from "react";
 
 interface IProps {
     result: any,
@@ -11,7 +12,7 @@ interface IProps {
 }
 
 const SingleMatch = ({ result, imageUrl, reloadPage, setReloadPage }: IProps) => {
-    const randomIndex = Math.floor(Math.random() * result.images.length);
+    const [randomIndex] = useState(Math.floor(Math.random() * result?.images?.length));
     const myProfile = useAppSelector(state => state.myProfile.results)
     const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken");
 
@@ -39,11 +40,11 @@ const SingleMatch = ({ result, imageUrl, reloadPage, setReloadPage }: IProps) =>
         <Col className="col-12 col-md-6 my-2">
             <div className="d-flex align-items-center p-1 plant-details-2">
                 <div className="plant-img-container mr-1">
-                    <img src={result.images[randomIndex].url.s} alt="Plant" />
+                    <img src={result?.images[randomIndex]?.url?.s} alt="Plant" />
                 </div>
                 <div className="d-flex flex-column">
-                    <div>{result.species.scientificNameWithoutAuthor}</div>
-                    <div style={{ fontSize: "13px" }}>Score: {result.score}</div>
+                    <div>{result?.species?.scientificNameWithoutAuthor}</div>
+                    <div style={{ fontSize: "13px" }}>Score: {result?.score}</div>
                 </div>
                 <AiFillPlusCircle className="ml-auto mr-2 post-icons" onClick={() => addToGarden(result.species.scientificNameWithoutAuthor)} />
             </div>

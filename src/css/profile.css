@@ -1,0 +1,95 @@
+.profile-img-container {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile-img-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.profile-username {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.profile-bio {
+    max-width: 90%;
+}
+
+.level {
+    height: 40px;
+    width: 40px;
+}
+
+.level path {
+    fill: #EDEDE9;
+}
+
+.level>path {
+    fill: #519087;
+}
+
+.level-expert {
+    height: 40px;
+    width: 40px;
+}
+
+.level-expert path {
+    fill: #519087;
+}
+
+.trophy {
+    height: 40px;
+    width: 40px;
+}
+
+.trophy path {
+    fill: #FED843;
+}
+
+.profile-details {
+    height: 100%;
+}
+
+.profile-posts {
+    margin-top: 10rem;
+}
+
+.profile-img-container .edit-icon-container {
+    top: auto;
+    bottom: 2%;
+    left: 70%;
+}
+
+
+@media (min-width: 700px) and (max-width: 880px) {
+
+    .profile-img-container {
+        width: 100%;
+        height: 70%;
+        align-self: center;
+    }
+
+    .profile-img-col {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+
+    .profile-img-col {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 5rem;
+    }
+}

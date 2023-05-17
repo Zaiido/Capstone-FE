@@ -41,7 +41,7 @@ const TheNavbar = () => {
                             <img src={myProfile && myProfile.avatar} alt="Profile" />
                         </div>
                         <NavDropdown className="username" title={myProfile && `Hi, ${myProfile.username}`} id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
+                            <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item onClick={logOut}>Log out</NavDropdown.Item>
                         </NavDropdown>

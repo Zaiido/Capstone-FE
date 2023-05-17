@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import { useRef, useState } from "react";
 import { Col, Card, DropdownButton, Dropdown, Form } from "react-bootstrap"
 import { AiOutlineEllipsis, AiOutlineUpload, AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai"
+import { useAppSelector } from "../../redux/hooks";
 
 interface IProps {
     plant: any,
@@ -18,6 +19,8 @@ const SinglePlant = ({ plant, reloadPage, setReloadPage }: IProps) => {
         year: "numeric",
     });
     const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken");
+    const myProfile = useAppSelector(state => state.myProfile.results)
+
 
     const [edit, setEdit] = useState(false)
     const [nameToEdit, setNameToEdit] = useState(plant.name)
@@ -107,6 +110,22 @@ const SinglePlant = ({ plant, reloadPage, setReloadPage }: IProps) => {
         }
     }
 
+
+    const deadPlantsNumber = async () => {
+        try {
+            let response = await fetch(`${process.env.REACT_APP_BE_URL}/garden/deadPlants/${myProfile._id}`,
+                {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${accessToken}` }
+                })
+            if (response.ok) {
+                // setReloadPage(!reloadPage)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <Col className="col-12 col-md-4 col-lg-3 px-0">
             <Card className="single-plant-card">
@@ -130,7 +149,7 @@ const SinglePlant = ({ plant, reloadPage, setReloadPage }: IProps) => {
                     title={<AiOutlineEllipsis className="post-icons garden-icons" />}
                 >
                     <Dropdown.Item eventKey="1" onClick={() => setEdit(true)}>Edit</Dropdown.Item>
-                    <Dropdown.Item eventKey="2" onClick={deletePlant}>Delete</Dropdown.Item>
+                    <Dropdown.Item eventKey="2" onClick={() => { deletePlant(); deadPlantsNumber() }}>Delete</Dropdown.Item>
                 </DropdownButton>
                 {edit &&
                     <>
