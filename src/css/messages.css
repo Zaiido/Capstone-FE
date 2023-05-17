@@ -198,18 +198,23 @@
 
 .single-plant-card img {
     height: 300px;
-    border-radius: 0;
     object-fit: cover;
 }
 
 .single-plant-card .card-body {
-    height: 200px;
+    height: 170px;
 }
 
 .single-plant-card .edit-icon {
     position: absolute;
     bottom: 0;
     right: 0;
+    cursor: pointer;
+}
+
+.single-plant-card .edit-icon:last-of-type {
+    bottom: 0;
+    right: 50px;
 }
 
 .single-plant-card #dropdown-button-drop-down {

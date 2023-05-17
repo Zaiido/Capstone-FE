@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { useRef, useState } from "react";
 import { Col, Card, DropdownButton, Dropdown, Form } from "react-bootstrap"
-import { AiOutlineEllipsis, AiOutlineUpload, AiOutlineCheckCircle } from "react-icons/ai"
+import { AiOutlineEllipsis, AiOutlineUpload, AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai"
 
 interface IProps {
     plant: any,
@@ -145,6 +145,7 @@ const SinglePlant = ({ plant, reloadPage, setReloadPage }: IProps) => {
                             <AiOutlineUpload className="post-icons garden-icons" onClick={handleIconClick} />
                         </div>
                         <AiOutlineCheckCircle className="post-icons garden-icons edit-icon mr-2 mb-2" onClick={() => { editPlant(); setEdit(false); }} />
+                        <AiOutlineCloseCircle className="ignore-icon garden-icons edit-icon mr-2 mb-2" onClick={() => { setEdit(false); }} />
                     </>}
             </Card>
         </Col>)
