@@ -26,6 +26,7 @@ const Garden = () => {
     const [reloadPage, setReloadPage] = useState(false)
     const [results, setResults] = useState<any[]>([])
     const [diagnoseResults, setDiagnoseResults] = useState<any[]>([])
+    const [loading, setLoading] = useState(false)
 
 
     const handleIconClick = () => {
@@ -52,6 +53,7 @@ const Garden = () => {
 
     const identifyPlant = async () => {
         try {
+            setLoading(true)
             const formData = new FormData();
             if (file) {
                 formData.append("plantImage", file);
@@ -68,6 +70,7 @@ const Garden = () => {
                 let { data, imageUrl } = await response.json()
                 setResults(data.results.slice(0, 10))
                 setUrl(imageUrl)
+                setLoading(false)
             }
         }
         catch (error) {
@@ -77,6 +80,7 @@ const Garden = () => {
 
     const diagnosePlant = async () => {
         try {
+            setLoading(true)
             const options = {
                 api_key: process.env.REACT_APP_DIAGNOSE_API_KEY,
                 images: [image],
@@ -100,6 +104,7 @@ const Garden = () => {
             if (response.ok) {
                 let data = await response.json()
                 setDiagnoseResults(data.health_assessment.diseases.slice(0, 4))
+                setLoading(false)
             }
         } catch (error) {
             console.log(error)
@@ -157,6 +162,45 @@ const Garden = () => {
                         </div>
                     </Col>
                 </Row>
+                {loading && <Row className="mt-5 pt-5">
+                    <Col className="d-flex align-items-center justify-content-center tree-col">
+                        <div className="tree-container">
+                            <div className="tree">
+                                <div className="branch" style={{ '--x': 0 } as React.CSSProperties}>
+                                    <span style={{ '--i': 0 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 1 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 2 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 3 } as React.CSSProperties}></span>
+                                </div>
+                                <div className="branch" style={{ '--x': 1 } as React.CSSProperties}>
+                                    <span style={{ '--i': 0 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 1 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 2 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 3 } as React.CSSProperties}></span>
+                                </div>
+                                <div className="branch" style={{ '--x': 2 } as React.CSSProperties}>
+                                    <span style={{ '--i': 0 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 1 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 2 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 3 } as React.CSSProperties}></span>
+                                </div>
+                                <div className="branch" style={{ '--x': 3 } as React.CSSProperties}>
+                                    <span style={{ '--i': 0 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 1 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 2 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 3 } as React.CSSProperties}></span>
+                                </div>
+                                <div className="stem">
+                                    <span style={{ '--i': 0 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 1 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 2 } as React.CSSProperties}></span>
+                                    <span style={{ '--i': 3 } as React.CSSProperties}></span>
+                                </div>
+                                <span className="shadow"></span>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>}
                 {results.length > 0 && <Row className="my-5">
                     <Col className="col-12">
                         <div className="section-container px-4 py-3">

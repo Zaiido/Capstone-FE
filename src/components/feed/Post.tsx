@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react"
 import { Row, Col, Modal, DropdownButton, Dropdown, Form, Button } from "react-bootstrap"
-import { AiOutlineComment, AiOutlineEllipsis, AiOutlineLike, AiFillLike } from 'react-icons/ai'
+import { AiOutlineComment, AiOutlineEllipsis, AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import { BsArrowClockwise } from 'react-icons/bs'
 import Comment from "./Comment"
 import { IPost } from "../../interfaces/IPost"
@@ -285,7 +285,7 @@ const Post = (props: IProps) => {
                                 }
                             </div>}
                             <div className="d-flex align-items-center justify-content-between reactions-container my-3">
-                                <div className="d-flex align-items-center"><AiFillLike className="post-icons mr-2" />{likesNumber}</div>
+                                <div className="d-flex align-items-center"><AiFillHeart className="post-icons mr-2" />{likesNumber}</div>
                                 <div className="comments-number" onClick={() => setCommentsShow(!commentsShow)}>{comments ? `${comments.length} Comments` : "No comments"}</div>
                             </div>
                         </div>
@@ -293,11 +293,11 @@ const Post = (props: IProps) => {
 
                             {myProfile && allLikes && allLikes.some((user) => user._id === myProfile._id) ?
                                 <div onClick={likeOrDislike} className="d-flex align-items-center p-2 action-btn liked">
-                                    <AiFillLike className="post-icons mr-2" /> <span>Like</span>
+                                    <AiFillHeart className="post-icons mr-2" /> <span>Like</span>
                                 </div>
                                 :
                                 <div onClick={likeOrDislike} className="d-flex align-items-center p-2 action-btn">
-                                    <AiOutlineLike className="post-icons mr-2" /> <span>Like</span>
+                                    <AiOutlineHeart className="post-icons mr-2" /> <span>Like</span>
                                 </div>
                             }
 
