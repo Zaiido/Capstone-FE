@@ -176,3 +176,43 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+.single-plant-card {
+    position: relative;
+}
+
+.edit-icon-container {
+    background-color: #EDEDE9;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    position: absolute;
+    top: 120px;
+    left: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.single-plant-card img {
+    height: 300px;
+    border-radius: 0;
+    object-fit: cover;
+}
+
+.single-plant-card .card-body {
+    height: 200px;
+}
+
+.single-plant-card .edit-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.single-plant-card #dropdown-button-drop-down {
+    background-color: transparent !important;
+    border-color: transparent !important;
+}

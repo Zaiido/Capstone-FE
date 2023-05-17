@@ -190,7 +190,7 @@ const Garden = () => {
                 <div className="my-garden">
                     <h4 className="text-center my-5">My Garden</h4>
                     <Row className="mt-5 mx-0">
-                        {myGarden && myGarden.map((plant: any) => <SinglePlant plant={plant} />)}
+                        {myGarden && myGarden.map((plant: any) => <SinglePlant plant={plant} reloadPage={reloadPage} setReloadPage={setReloadPage} />)}
                     </Row>
                 </div>
             </Container>
