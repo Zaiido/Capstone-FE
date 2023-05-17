@@ -111,6 +111,44 @@ const Garden = () => {
         }
     }
 
+
+    const takePicture = async () => {
+        try {
+            const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const video = document.createElement('video');
+            video.srcObject = mediaStream;
+
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+
+            video.addEventListener('loadedmetadata', () => {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+
+                context?.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                canvas.toBlob((blob) => {
+                    if (blob) {
+                        const file = new File([blob], 'captured-image.jpeg', { type: 'image/jpeg' });
+                        setFile(file);
+                    }
+                }, 'image/jpeg');
+
+                const dataURL = canvas.toDataURL('image/jpeg');
+                setImage(dataURL);
+
+                video.pause();
+                video.srcObject = null;
+                mediaStream.getTracks().forEach(track => track.stop());
+            });
+
+            video.play();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
     useEffect(() => {
         if (myProfile && !Array.isArray(myProfile)) {
             const tokenCookie = Cookies.get("accessToken") || localStorage.getItem("accessToken");
@@ -136,7 +174,7 @@ const Garden = () => {
                                         </Tooltip>
                                     }
                                 >
-                                    <AiOutlineCamera className="post-icons garden-icons mx-1" />
+                                    <AiOutlineCamera className="post-icons garden-icons mx-1" onClick={takePicture} />
                                 </OverlayTrigger>
                                 <input
                                     type="file"
@@ -145,7 +183,18 @@ const Garden = () => {
                                     style={{ display: 'none' }}
                                     onChange={handleFileUpload}
                                 />
-                                <AiOutlineUpload onClick={handleIconClick} className="post-icons garden-icons mx-1" />
+                                <OverlayTrigger
+                                    key="bottom"
+                                    placement="bottom"
+                                    overlay={
+                                        <Tooltip id={`tooltip-bottom`}>
+                                            Upload Image
+                                        </Tooltip>
+                                    }
+                                >
+                                    <AiOutlineUpload onClick={handleIconClick} className="post-icons garden-icons mx-1" />
+                                </OverlayTrigger>
+
                                 {file && <div className="d-flex align-items-center p-1 ml-5 plant-details">
                                     <div className="plant-img-container mr-1">
                                         <img src={image} alt="Plant" />
