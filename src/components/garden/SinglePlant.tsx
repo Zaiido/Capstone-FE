@@ -12,12 +12,10 @@ interface IProps {
 
 const SinglePlant = ({ plant, reloadPage, setReloadPage }: IProps) => {
     const dateString = plant.createdAt;
-    const date = new Date(dateString);
-    const formattedDate = date.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-    });
+    const datetime = new Date(dateString);
+    const formattedDate = `${datetime.getDate() < 10 ? '0' : ''}${datetime.getDate()}.${datetime.getMonth() + 1 < 10 ? '0' : ''}${datetime.getMonth() + 1}.${datetime.getFullYear()}`;
+    const formattedTime = `${datetime.getHours() < 10 ? '0' : ''}${datetime.getHours()}:${datetime.getMinutes() < 10 ? '0' : ''}${datetime.getMinutes()}`;
+
     const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken");
     const myProfile = useAppSelector(state => state.myProfile.results)
 
@@ -113,14 +111,11 @@ const SinglePlant = ({ plant, reloadPage, setReloadPage }: IProps) => {
 
     const deadPlantsNumber = async () => {
         try {
-            let response = await fetch(`${process.env.REACT_APP_BE_URL}/garden/deadPlants/${myProfile._id}`,
+            await fetch(`${process.env.REACT_APP_BE_URL}/garden/deadPlants/${myProfile._id}`,
                 {
                     method: "POST",
                     headers: { "Authorization": `Bearer ${accessToken}` }
                 })
-            if (response.ok) {
-                // setReloadPage(!reloadPage)
-            }
         } catch (error) {
             console.log(error)
         }
@@ -137,7 +132,7 @@ const SinglePlant = ({ plant, reloadPage, setReloadPage }: IProps) => {
                         </Form.Group>
                         : <Card.Title>{plant.name}</Card.Title>}
                     <Card.Text style={{ fontSize: "13px" }}>
-                        {formattedDate}
+                        On {formattedDate}, at {formattedTime}
                     </Card.Text>
                 </Card.Body>
                 <DropdownButton

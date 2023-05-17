@@ -7,5 +7,6 @@ export interface IPost {
     video?: string;
     user: IRequest;
     likes: IRequest[];
-    repost?: IPost
+    repost?: IPost,
+    createdAt: string
 }
