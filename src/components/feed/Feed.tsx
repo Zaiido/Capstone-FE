@@ -208,10 +208,14 @@ const Feed = () => {
                             {receivedRequests && receivedRequests.length === 0 ? <p style={{ fontSize: "13px" }}>You have no new requests!</p> : receivedRequests.slice(0, 4).map((user: IRequest, i: number) => <Request user={user} key={i} setReloadPage={setReloadPage} reloadPage={reloadPage} />)}
 
                         </div>
-                        <div className="section-container mb-3 p-4">
-                            <p>Suggestions</p>
-                            {allProfiles && myProfile && following && allProfiles.filter((profile: IUser) => profile._id !== myProfile._id && !following.some((user: IRequest) => user._id === profile._id)).slice(0, 4).map((profile: IUser) => <Suggestion key={profile._id} profile={profile} reloadPage={reloadPage} setReloadPage={setReloadPage} />)}
-                        </div>
+                        {allProfiles.filter(
+                            (profile: IUser) =>
+                                profile._id !== myProfile._id &&
+                                !following.some((user: IRequest) => user._id === profile._id)
+                        ).length > 0 && <div className="section-container mb-3 p-4">
+                                <p>Suggestions</p>
+                                {allProfiles && myProfile && following && allProfiles.filter((profile: IUser) => profile._id !== myProfile._id && !following.some((user: IRequest) => user._id === profile._id)).slice(0, 4).map((profile: IUser) => <Suggestion key={profile._id} profile={profile} reloadPage={reloadPage} setReloadPage={setReloadPage} />)}
+                            </div>}
                     </Col>
                 </Row>
             </Container>
