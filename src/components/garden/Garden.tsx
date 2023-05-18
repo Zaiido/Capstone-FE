@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Col, Container, Form, OverlayTrigger, Row, Tooltip } from "react-bootstrap"
+import { Col, Container, OverlayTrigger, Row, Tooltip } from "react-bootstrap"
 import TheNavbar from "../navbar/TheNavbar"
 import { AiOutlineCamera, AiOutlineUpload } from 'react-icons/ai'
 import { useEffect, useRef, useState } from "react";
@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { fetchGardenAction, fetchStoresAction } from "../../redux/actions";
 import SingleDiagnose from "./SingleDiagnose";
 import StoreMap from "./StoreMap";
+import AddStoreForm from "./AddStoreForm";
 
 const Garden = () => {
 
@@ -28,14 +29,6 @@ const Garden = () => {
     const [results, setResults] = useState<any[]>([])
     const [diagnoseResults, setDiagnoseResults] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
-    const [address, setAddress] = useState(
-        {
-            street: "",
-            houseNumber: "",
-            postcode: "",
-            city: "",
-            country: ""
-        })
 
 
     const handleIconClick = () => {
@@ -156,48 +149,6 @@ const Garden = () => {
             console.log(error);
         }
     };
-
-    const handleAddButtonClick = async () => {
-        try {
-            const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address.houseNumber + " " + address.street + ", " + address.postcode + ", " + address.city + ", " + address.country)}`);
-
-            if (response.ok) {
-                const data = await response.json();
-
-                if (data.length > 0) {
-                    const firstResult = data[0];
-                    const { lat, lon } = firstResult;
-                    createStore(lat, lon)
-                } else {
-                    console.log("No coordinates found for the provided address.");
-                }
-            } else {
-                console.log("Error occurred while fetching coordinates from the API:", response.statusText);
-            }
-        } catch (error) {
-            console.log("Error occurred while fetching coordinates from the API:", error);
-        }
-    };
-
-
-    const createStore = async (lat: string, lon: string) => {
-        try {
-            let response = await fetch(`${process.env.REACT_APP_BE_URL}/stores`,
-                {
-                    method: "POST",
-                    body: JSON.stringify({ coordinates: [lat, lon], address }),
-                    headers: {
-                        "Authorization": `Bearer ${accessToken}`,
-                        "Content-Type": "application/json"
-                    }
-                })
-            if (response.ok) {
-                setReloadPage(!reloadPage)
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
 
     useEffect(() => {
@@ -347,29 +298,7 @@ const Garden = () => {
                         <Col className="col-12 col-md-4">
                             <h4 className="text-center">Add a Plant House</h4>
                             <h6 className="text-center mb-3">(if you know any)</h6>
-                            <Form className="d-flex flex-column">
-                                <Form.Group>
-                                    <Form.Label>Street:</Form.Label>
-                                    <Form.Control value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })} type="text" className="address-input" />
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>House Number:</Form.Label>
-                                    <Form.Control value={address.houseNumber} onChange={(e) => setAddress({ ...address, houseNumber: e.target.value })} type="text" className="address-input" />
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>Post Code:</Form.Label>
-                                    <Form.Control value={address.postcode} onChange={(e) => setAddress({ ...address, postcode: e.target.value })} type="text" className="address-input" />
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>City:</Form.Label>
-                                    <Form.Control value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} type="text" className="address-input" />
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>Country:</Form.Label>
-                                    <Form.Control value={address.country} onChange={(e) => setAddress({ ...address, country: e.target.value })} type="text" className="address-input" />
-                                </Form.Group>
-                                <Button className="post-btn mt-4" onClick={handleAddButtonClick}>Add</Button>
-                            </Form>
+                            <AddStoreForm reloadPage={reloadPage} setReloadPage={setReloadPage} />
                         </Col>
                     </Row>
                 </div>

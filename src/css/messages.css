@@ -303,10 +303,10 @@
 
 .store-map-container {
     margin-top: 15rem;
+    margin-bottom: 7rem;
 }
 
 .address-input {
     border-color: rgb(206, 212, 218) !important;
     box-shadow: none !important;
-
 }
