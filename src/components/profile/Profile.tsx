@@ -11,7 +11,7 @@ import SingleProfilePost from "./SingleProfilePost"
 import Cookies from "js-cookie"
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 import { IPost } from "../../interfaces/IPost"
-import { fetchGarden, fetchMyProfileAction } from "../../redux/actions"
+import { fetchGardenAction, fetchMyProfileAction } from "../../redux/actions"
 
 const Profile = () => {
     const myProfile = useAppSelector(state => state.myProfile.results)
@@ -116,7 +116,7 @@ const Profile = () => {
     useEffect(() => {
         if (myProfile && !Array.isArray(myProfile)) {
             const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken");
-            dispatch(fetchGarden(myProfile._id, accessToken as string));
+            dispatch(fetchGardenAction(myProfile._id, accessToken as string));
             getDeadPlantsNumber()
         }
     }, [myProfile, reloadPage]);

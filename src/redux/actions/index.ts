@@ -24,6 +24,8 @@ export const SET_LIVE_CHAT = "GET_LIVE_CHAT"
 export const CLEAR_LIVE_CHAT = "CLEAR_LIVE_CHAT"
 export const GET_GARDEN = "GET_GARDEN"
 export const CLEAR_GARDEN = "CLEAR_GARDEN"
+export const GET_STORES = "GET_STORES"
+export const CLEAR_STORES = "CLEAR_STORES"
 
 
 
@@ -253,7 +255,7 @@ export const fetchActiveChatAction = (chatId: string, accessToken: string) => {
 };
 
 
-export const fetchGarden = (userId: string, accessToken: string) => {
+export const fetchGardenAction = (userId: string, accessToken: string) => {
     return async (dispatch: Dispatch) => {
         try {
             let response = await fetch(
@@ -267,6 +269,31 @@ export const fetchGarden = (userId: string, accessToken: string) => {
             if (response.ok) {
                 let garden = await response.json();
                 dispatch({ type: GET_GARDEN, payload: garden });
+            } else {
+                console.log("Error");
+            }
+        } catch (error) {
+            console.log(error);
+
+        };
+    }
+};
+
+
+export const fetchStoresAction = (accessToken: string) => {
+    return async (dispatch: Dispatch) => {
+        try {
+            let response = await fetch(
+                `${process.env.REACT_APP_BE_URL}/stores`,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            );
+            if (response.ok) {
+                let allStores = await response.json();
+                dispatch({ type: GET_STORES, payload: allStores });
             } else {
                 console.log("Error");
             }

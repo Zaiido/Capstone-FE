@@ -299,3 +299,14 @@
     transform-style: preserve-3d;
     transform: rotateX(90deg) translateZ(-65px);
 }
+
+
+.store-map-container {
+    margin-top: 15rem;
+}
+
+.address-input {
+    border-color: rgb(206, 212, 218) !important;
+    box-shadow: none !important;
+
+}
