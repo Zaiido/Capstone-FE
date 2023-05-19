@@ -363,3 +363,11 @@ html,
     border-color: #b0afaf !important;
     box-shadow: none !important;
 }
+
+.bottom-border {
+    border-bottom: #519087 5px solid;
+}
+
+.profile-posts .col {
+    cursor: pointer;
+}

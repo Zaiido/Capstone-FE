@@ -3,10 +3,11 @@ import { IPost } from "../../interfaces/IPost"
 import { useState } from "react";
 
 interface IProps {
-    post: IPost
+    post: IPost,
+    otherProfile: boolean
 }
 
-const SingleProfilePost = ({ post }: IProps) => {
+const SingleProfilePost = ({ post, otherProfile }: IProps) => {
 
     const [show, setShow] = useState(false);
 
@@ -38,7 +39,7 @@ const SingleProfilePost = ({ post }: IProps) => {
                 <Modal.Header closeButton>
                 </Modal.Header>
                 <Modal.Body>
-                    <div style={{ fontSize: "12px" }}>You, on {formattedDate} at {formattedTime}</div>
+                    {otherProfile ? <div style={{ fontSize: "12px" }}>{post.user.username}, on {formattedDate} at {formattedTime}</div> : <div style={{ fontSize: "12px" }}>You, on {formattedDate} at {formattedTime}</div>}
                     {post.image && <img src={post.image} alt="Post" />}
                     {post.video && <video width="100%" height="300px" controls>
                         <source src={post.video} type="video/mp4" />

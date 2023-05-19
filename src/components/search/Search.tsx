@@ -14,6 +14,8 @@ import Cookies from "js-cookie"
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 import { fetchFollowingAction, fetchSentRequestsAction } from "../../redux/actions"
 import { IRequest } from "../../interfaces/IRequest"
+import SingleProfilePost from "../profile/SingleProfilePost"
+import UserGarden from "./UserGarden"
 
 const Search = () => {
     const params = useParams()
@@ -31,6 +33,8 @@ const Search = () => {
     const [garden, setGarden] = useState<any[]>([])
     const [deadPlantsNumber, setDeadPlantsNumber] = useState(0)
     const [reloadPage, setReloadPage] = useState(false)
+    const [showPosts, setShowPosts] = useState(true)
+    const [showGarden, setShowGarden] = useState(false)
 
 
     const getProfile = async () => {
@@ -43,7 +47,6 @@ const Search = () => {
                 })
             if (response.ok) {
                 let user = await response.json()
-                console.log(user)
                 setProfile(user)
             }
         } catch (error) {
@@ -117,8 +120,6 @@ const Search = () => {
 
     useEffect(() => {
         getProfile()
-        getGarden()
-        getDeadPlantsNumber()
         if (myProfile && !Array.isArray(myProfile)) {
             const tokenCookie = Cookies.get("accessToken") || localStorage.getItem("accessToken");
             dispatch(fetchFollowingAction(myProfile._id, tokenCookie as string));
@@ -126,6 +127,15 @@ const Search = () => {
         }
 
     }, [params.id, reloadPage])
+
+
+    useEffect(() => {
+        if (profile) {
+            getGarden()
+            getDeadPlantsNumber()
+        }
+
+    }, [profile])
 
 
     return (
@@ -173,6 +183,16 @@ const Search = () => {
                             </div>
                         </Col>
                     </Row>
+                    <Row className="profile-posts">
+                        <Col className="col-12 col-md-6 text-center text-md-right" onClick={() => { setShowPosts(true); setShowGarden(false) }}><span className={showPosts ? "bottom-border" : ""}>Posts</span></Col>
+                        <Col className="col-12 col-md-6 text-center text-md-left" onClick={() => { setShowPosts(false); setShowGarden(true) }}><span className={showGarden ? "bottom-border" : ""}>Garden</span></Col>
+                    </Row>
+                    {showPosts && <Row className="mx-0 mt-5">
+                        {allPosts?.filter((post: IPost) => post.user._id === profile?._id).reverse().map((post: IPost) => <SingleProfilePost key={post._id} post={post} otherProfile={true} />)}
+                    </Row>}
+                    {showGarden && <Row className="mx-0 mt-5">
+                        {garden && garden.map((plant: any, i: number) => <UserGarden key={i} plant={plant} />)}
+                    </Row>}
                 </Container>
             </div>
         </>)

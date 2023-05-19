@@ -35,7 +35,7 @@ const TheNavbar = () => {
         dispatch({ type: CLEAR_ACTIVE_CHAT })
         dispatch({ type: CLEAR_LIVE_CHAT })
         dispatch({ type: CLEAR_GARDEN })
-        dispatch({ dispatch: CLEAR_STORES })
+        dispatch({ type: CLEAR_STORES })
         navigate("/login")
     }
 

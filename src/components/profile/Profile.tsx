@@ -183,7 +183,7 @@ const Profile = () => {
                         </Col>
                     </Row>
                     <Row className="profile-posts mx-0">
-                        {allPosts?.filter((post: IPost) => post.user._id === myProfile?._id).reverse().map((post: IPost) => <SingleProfilePost key={post._id} post={post} />)}
+                        {allPosts?.filter((post: IPost) => post.user._id === myProfile?._id).reverse().map((post: IPost) => <SingleProfilePost key={post._id} post={post} otherProfile={false} />)}
                     </Row>
                 </Container>
             </div>
