@@ -148,11 +148,15 @@ const Feed = () => {
     const following = useAppSelector(state => state.following.results)
 
     useEffect(() => {
-        const tokenCookie = Cookies.get("accessToken");
-        if (tokenCookie) {
-            dispatch(fetchMyProfileAction(tokenCookie));
-            dispatch(fetchAllProfilesAction(tokenCookie));
-            dispatch(fetchAllPostsAction(tokenCookie));
+        const cookieName = "accessToken";
+        const cookieValue = document.cookie
+            .split("; ")
+            .find(row => row.startsWith(`${cookieName}=`))
+            ?.split("=")[1];
+        if (cookieValue) {
+            dispatch(fetchMyProfileAction(cookieValue));
+            dispatch(fetchAllProfilesAction(cookieValue));
+            dispatch(fetchAllPostsAction(cookieValue));
         } else {
             const accessToken = localStorage.getItem("accessToken");
             dispatch(fetchMyProfileAction(accessToken as string));
