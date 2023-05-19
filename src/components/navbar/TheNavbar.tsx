@@ -1,19 +1,25 @@
-import { useState } from "react"
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react"
 import { Navbar, Container, Form, FormControl, Button, Nav, NavDropdown } from "react-bootstrap"
 import { AiOutlineSearch } from 'react-icons/ai'
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 import { useLocation, useNavigate } from "react-router-dom"
 import Cookies from "js-cookie"
-import { CLEAR_ACTIVE_CHAT, CLEAR_ALL_CHATS, CLEAR_ALL_POSTS, CLEAR_ALL_PROFILES, CLEAR_FOLLOWERS, CLEAR_FOLLOWING, CLEAR_GARDEN, CLEAR_LIVE_CHAT, CLEAR_MY_PROFILE, CLEAR_RECEIVED_REQUESTS, CLEAR_SENT_REQUESTS } from "../../redux/actions"
+import { CLEAR_ACTIVE_CHAT, CLEAR_ALL_CHATS, CLEAR_ALL_POSTS, CLEAR_ALL_PROFILES, CLEAR_FOLLOWERS, CLEAR_FOLLOWING, CLEAR_GARDEN, CLEAR_LIVE_CHAT, CLEAR_MY_PROFILE, CLEAR_RECEIVED_REQUESTS, CLEAR_SENT_REQUESTS, CLEAR_STORES } from "../../redux/actions"
+import SingleSearchProfile from "./SingleSearchProfile"
+import { IUser } from "../../interfaces/IUser"
 
 const TheNavbar = () => {
     const [showSearchBar, setShowSearchBar] = useState(false)
+    const [showSearchDropdown, setShowSearchDropdown] = useState(false)
     const [query, setQuery] = useState("")
+    const [searchResults, setSearchResults] = useState<any[]>([])
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const location = useLocation()
 
     const myProfile = useAppSelector(state => state.myProfile.results)
+    const allProfiles = useAppSelector(state => state.allProfiles.results)
 
     const logOut = () => {
         localStorage.removeItem("accessToken")
@@ -29,8 +35,19 @@ const TheNavbar = () => {
         dispatch({ type: CLEAR_ACTIVE_CHAT })
         dispatch({ type: CLEAR_LIVE_CHAT })
         dispatch({ type: CLEAR_GARDEN })
+        dispatch({ dispatch: CLEAR_STORES })
         navigate("/login")
     }
+
+    useEffect(() => {
+        if (query === "") {
+            setShowSearchDropdown(false)
+        } else {
+            setShowSearchDropdown(true)
+            const users = allProfiles.filter((user: IUser) => user.username.toLowerCase().includes(query.toLowerCase()))
+            setSearchResults(users)
+        }
+    }, [query])
 
     return (
         <Navbar expand="lg">
@@ -69,6 +86,9 @@ const TheNavbar = () => {
                                 }
                             }}><AiOutlineSearch /></Button>
                     </Form>
+                    {showSearchDropdown && <div className="search-dropdown">
+                        {searchResults && searchResults.map((user: IUser) => <SingleSearchProfile key={user._id} user={user} showDropdown={setShowSearchDropdown} showSearch={setShowSearchBar} setQuery={setQuery} />)}
+                    </div>}
                 </Navbar.Collapse>
             </Container>
         </Navbar>

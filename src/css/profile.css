@@ -59,6 +59,11 @@
     margin-top: 10rem;
 }
 
+.profile-posts .card,
+.profile-posts .card img {
+    border-radius: 0;
+}
+
 .profile-img-container .edit-icon-container {
     top: auto;
     bottom: 2%;

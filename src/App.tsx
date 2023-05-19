@@ -10,6 +10,7 @@ import Network from './components/network/Network';
 import Messages from './components/messages/Messages';
 import Garden from './components/garden/Garden';
 import Profile from './components/profile/Profile';
+import Search from './components/search/Search';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route element={<Messages />} path='/messages' />
         <Route element={<Garden />} path='/garden' />
         <Route element={<Profile />} path='/profile' />
+        <Route element={<Search />} path='profile/:id' />
       </Routes>
     </BrowserRouter>
   );

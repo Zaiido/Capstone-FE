@@ -41,6 +41,12 @@ const Post = (props: IProps) => {
     const handleCloseRepostModal = () => setShowRepostModal(false);
     const handleShowRepostModal = () => setShowRepostModal(true);
 
+    const dateString = props.post.createdAt;
+    const datetime = new Date(dateString);
+    const formattedDate = `${datetime.getDate() < 10 ? '0' : ''}${datetime.getDate()}.${datetime.getMonth() + 1 < 10 ? '0' : ''}${datetime.getMonth() + 1}.${datetime.getFullYear()}`;
+    const formattedTime = `${datetime.getHours() < 10 ? '0' : ''}${datetime.getHours()}:${datetime.getMinutes() < 10 ? '0' : ''}${datetime.getMinutes()}`;
+
+
 
     const getLikes = async () => {
         try {
@@ -218,6 +224,8 @@ const Post = (props: IProps) => {
                                 <div className="username">
                                     {props.post.user.username}
                                     {props.post.repost && <div style={{ fontSize: "12px" }}>Reposted from {props.post.repost.user.username}</div>}
+                                    <div style={{ fontSize: "12px" }}><>{formattedDate}, {formattedTime}</></div>
+
                                 </div>
                                 {myProfile && myProfile._id === props.post.user._id &&
                                     <div className="ml-auto">

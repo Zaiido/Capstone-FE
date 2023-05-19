@@ -169,7 +169,7 @@ const Profile = () => {
                                     </Col>
                                     <Col className="col-12 col-md-3 d-flex flex-column">
                                         <div className="d-flex flex-column justify-content-center my-1 profile-details">
-                                            {myGarden?.length <= 10 && <div className="d-flex align-items-center my-2"><FcLowBattery className="level" /> Beginner Gardener</div>}
+                                            {myGarden?.length > 0 && myGarden?.length <= 10 && <div className="d-flex align-items-center my-2"><FcLowBattery className="level" /> Beginner Gardener</div>}
                                             {myGarden?.length > 10 && myGarden?.length <= 50 && <div className="d-flex align-items-center"><FcMiddleBattery className="level" /> Intermediate Gardener</div>}
                                             {myGarden?.length > 50 && myGarden?.length <= 100 && <div className="d-flex align-items-center"><FcHighBattery className="level" /> Advanced Gardener</div>}
                                             {myGarden?.length > 100 && <div className="d-flex align-items-center"><FcFullBattery className="level-expert" /> Expert Gardener</div>}
