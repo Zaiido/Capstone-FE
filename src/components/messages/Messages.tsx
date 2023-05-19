@@ -225,7 +225,7 @@ const Messages = () => {
                                         <AiOutlineWechat className="post-icons ml-auto" onClick={handleShow} />
                                     </div>
                                     <div className="network-container">
-                                        {allChats && allChats.map((chat: IChat) => <Chat key={chat._id} reloadPage={reloadPage} setReloadPage={setReloadPage} chat={chat} />)}
+                                        {allChats && allChats.slice(0,).reverse().map((chat: IChat) => <Chat key={chat._id} reloadPage={reloadPage} setReloadPage={setReloadPage} chat={chat} />)}
                                     </div>
                                 </div>
                             </Col>

@@ -286,7 +286,7 @@ const Garden = () => {
                 <div className="my-garden">
                     <h4 className="text-center my-5">My Garden</h4>
                     <Row className="mt-5 mx-0">
-                        {myGarden && myGarden.reverse().map((plant: any, i: number) => <SinglePlant key={i} plant={plant} reloadPage={reloadPage} setReloadPage={setReloadPage} />)}
+                        {myGarden && myGarden.slice().reverse().map((plant: any, i: number) => <SinglePlant key={i} plant={plant} reloadPage={reloadPage} setReloadPage={setReloadPage} />)}
                     </Row>
                 </div>
                 <div className="store-map-container">
