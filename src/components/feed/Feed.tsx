@@ -211,7 +211,7 @@ const Feed = () => {
                                 </div>
                             </Col>
                         </Row>
-                        {allPosts && allPosts.slice().reverse().map((post: IPost) => <Post post={post} key={post._id} reloadPage={reloadPage} setReloadPage={setReloadPage} />)}
+                        {allPosts && allPosts.slice().reverse().filter((post: IPost) => following.some((user: IRequest) => user._id === post.user._id) || post.user._id === myProfile?._id).map((post: IPost) => <Post post={post} key={post._id} reloadPage={reloadPage} setReloadPage={setReloadPage} />)}
                     </Col>
                     <Col className="col-12 col-md-4 d-none d-md-block">
                         <div className="section-container mb-3 p-4">
