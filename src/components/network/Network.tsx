@@ -60,7 +60,7 @@ const Network = () => {
                                         <span className="network-number">{following && following.length}</span>
                                     </div>
                                     <div className="network-container">
-                                        {following && following.map((user: IRequest) => <Following key={user._id} reloadPage={reloadPage} setReloadPage={setReloadPage} user={user} />)}
+                                        {following && following.reverse().map((user: IRequest) => <Following key={user._id} reloadPage={reloadPage} setReloadPage={setReloadPage} user={user} />)}
                                     </div>
                                 </div>
                             </Col>
@@ -73,7 +73,7 @@ const Network = () => {
                                         <span className="network-number">{followers && followers.length}</span>
                                     </div>
                                     <div className="network-container">
-                                        {followers && followers.map((user: IRequest) => <Follower key={user._id} user={user} reloadPage={reloadPage} setReloadPage={setReloadPage} />)}
+                                        {followers && followers.reverse().map((user: IRequest) => <Follower key={user._id} user={user} reloadPage={reloadPage} setReloadPage={setReloadPage} />)}
                                     </div>
                                 </div>
                             </Col>
@@ -88,7 +88,7 @@ const Network = () => {
                                         <span className="network-number">{receivedRequests && receivedRequests.length}</span>
                                     </div>
                                     <div className="network-container">
-                                        {receivedRequests && receivedRequests.map((user: IRequest, i: number) => <Request user={user} key={i} setReloadPage={setReloadPage} reloadPage={reloadPage} />)}
+                                        {receivedRequests && receivedRequests.reverse().map((user: IRequest, i: number) => <Request user={user} key={i} setReloadPage={setReloadPage} reloadPage={reloadPage} />)}
                                     </div>
                                 </div>
                             </Col>

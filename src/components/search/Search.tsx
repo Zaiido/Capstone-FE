@@ -193,7 +193,7 @@ const Search = () => {
                                 {allPosts?.filter((post: IPost) => post.user._id === profile?._id).reverse().map((post: IPost) => <SingleProfilePost key={post._id} post={post} otherProfile={true} />)}
                             </Row>}
                             {showGarden && <Row className="mx-0 mt-5">
-                                {garden && garden.map((plant: any, i: number) => <UserGarden key={i} plant={plant} />)}
+                                {garden && garden.reverse().map((plant: any, i: number) => <UserGarden key={i} plant={plant} />)}
                             </Row>}
                         </>}
                 </Container>
