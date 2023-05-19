@@ -13,6 +13,7 @@ import { fetchAllPostsAction, fetchAllProfilesAction, fetchFollowingAction, fetc
 import { IUser } from "../../interfaces/IUser";
 import { IRequest } from "../../interfaces/IRequest";
 import { IPost } from "../../interfaces/IPost";
+import { useSearchParams } from "react-router-dom";
 
 const Feed = () => {
     const [show, setShow] = useState(false);
@@ -22,6 +23,7 @@ const Feed = () => {
     const [file, setFile] = useState<File | null>(null);
     const [reloadPage, setReloadPage] = useState(false)
     const dispatch = useAppDispatch()
+    const [searchParams] = useSearchParams()
 
     const handleClose = () => {
         setText("")
@@ -74,8 +76,7 @@ const Feed = () => {
             setFile(null);
         }
     };
-
-    const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken");
+    const accessToken = Cookies.get("accessToken") || localStorage.getItem("accessToken") || searchParams.get("accessToken");
 
     const handleSubmitTextOnly = async () => {
         try {
@@ -146,6 +147,15 @@ const Feed = () => {
     const myProfile = useAppSelector(state => state.myProfile.results)
     const receivedRequests = useAppSelector(state => state.receivedRequests.results)
     const following = useAppSelector(state => state.following.results)
+
+
+
+    useEffect(() => {
+        if (searchParams.get("accessToken")) {
+            localStorage.setItem("accessToken", searchParams.get("accessToken") as string)
+        }
+    }, [searchParams])
+
 
     useEffect(() => {
         const tokenCookie = Cookies.get("accessToken");
