@@ -183,16 +183,19 @@ const Search = () => {
                             </div>
                         </Col>
                     </Row>
-                    <Row className="profile-posts">
-                        <Col className="col-12 col-md-6 text-center text-md-right" onClick={() => { setShowPosts(true); setShowGarden(false) }}><span className={showPosts ? "bottom-border" : ""}>Posts</span></Col>
-                        <Col className="col-12 col-md-6 text-center text-md-left" onClick={() => { setShowPosts(false); setShowGarden(true) }}><span className={showGarden ? "bottom-border" : ""}>Garden</span></Col>
-                    </Row>
-                    {showPosts && <Row className="mx-0 mt-5">
-                        {allPosts?.filter((post: IPost) => post.user._id === profile?._id).reverse().map((post: IPost) => <SingleProfilePost key={post._id} post={post} otherProfile={true} />)}
-                    </Row>}
-                    {showGarden && <Row className="mx-0 mt-5">
-                        {garden && garden.map((plant: any, i: number) => <UserGarden key={i} plant={plant} />)}
-                    </Row>}
+                    {following && following.some((user: IUser) => user._id === profile?._id) &&
+                        <>
+                            <Row className="profile-posts">
+                                <Col className="col-12 col-md-6 text-center text-md-right" onClick={() => { setShowPosts(true); setShowGarden(false) }}><span className={showPosts ? "bottom-border" : ""}>Posts</span></Col>
+                                <Col className="col-12 col-md-6 text-center text-md-left" onClick={() => { setShowPosts(false); setShowGarden(true) }}><span className={showGarden ? "bottom-border" : ""}>Garden</span></Col>
+                            </Row>
+                            {showPosts && <Row className="mx-0 mt-5">
+                                {allPosts?.filter((post: IPost) => post.user._id === profile?._id).reverse().map((post: IPost) => <SingleProfilePost key={post._id} post={post} otherProfile={true} />)}
+                            </Row>}
+                            {showGarden && <Row className="mx-0 mt-5">
+                                {garden && garden.map((plant: any, i: number) => <UserGarden key={i} plant={plant} />)}
+                            </Row>}
+                        </>}
                 </Container>
             </div>
         </>)
