@@ -295,7 +295,7 @@ const Garden = () => {
                             <h4 className="text-center mb-5">Plant Houses</h4>
                             <StoreMap initialLocation={[52.5200, 13.4050]} />
                         </Col>
-                        <Col className="col-12 col-md-4">
+                        <Col className="col-12 mt-5 mt-md-0 col-md-4">
                             <h4 className="text-center">Add a Plant House</h4>
                             <h6 className="text-center mb-3">(if you know any)</h6>
                             <AddStoreForm reloadPage={reloadPage} setReloadPage={setReloadPage} />

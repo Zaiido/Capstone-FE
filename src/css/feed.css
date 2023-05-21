@@ -55,7 +55,7 @@ html,
     border-color: #256C57 !important;
 }
 
-.navbar .container {
+.navbar .form-inline {
     position: relative;
 }
 
@@ -73,6 +73,14 @@ html,
 
 .search-dropdown .single-search-user:hover {
     border-radius: 0 !important;
+}
+
+.navbar-light .navbar-toggler {
+    border-color: rgb(255 255 255 / 25%);
+}
+
+.navbar-light .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 width=%2730%27 height=%2730%27 viewBox=%270 0 30 30%27><path stroke=%27rgba%28255, 255, 255, 0.5%29%27 stroke-linecap=%27round%27 stroke-miterlimit=%2710%27 stroke-width=%272%27 d=%27M4 7h22M4 15h22M4 23h22%27/></svg>");
 }
 
 .truncate {
@@ -376,5 +384,10 @@ html,
 @media (max-width: 450px) {
     .post-actions-text {
         display: none;
+    }
+
+    .search-dropdown {
+        min-width: 100%;
+        right: 0;
     }
 }

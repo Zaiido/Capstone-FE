@@ -79,16 +79,15 @@ const TheNavbar = () => {
                             onChange={(e) => setQuery(e.target.value)} type="text" placeholder="Search" className="mr-sm-2 search-bar" />}
                         <Button className="search-btn"
                             onClick={() => {
-                                if (showSearchBar) {
-                                    console.log("Search")
-                                } else {
+                                if (!showSearchBar) {
                                     setShowSearchBar(true)
                                 }
                             }}><AiOutlineSearch /></Button>
+                        {showSearchDropdown && <div className="search-dropdown">
+                            {searchResults && searchResults.map((user: IUser) => <SingleSearchProfile key={user._id} user={user} showDropdown={setShowSearchDropdown} showSearch={setShowSearchBar} setQuery={setQuery} />)}
+                        </div>}
                     </Form>
-                    {showSearchDropdown && <div className="search-dropdown">
-                        {searchResults && searchResults.map((user: IUser) => <SingleSearchProfile key={user._id} user={user} showDropdown={setShowSearchDropdown} showSearch={setShowSearchBar} setQuery={setQuery} />)}
-                    </div>}
+
                 </Navbar.Collapse>
             </Container>
         </Navbar>
