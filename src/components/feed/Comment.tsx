@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Dropdown, DropdownButton, Form } from 'react-bootstrap'
-import { AiFillLike, AiOutlineEllipsis, AiOutlineLike } from 'react-icons/ai'
+import { AiFillHeart, AiOutlineEllipsis, AiOutlineHeart } from 'react-icons/ai'
 import { IComment } from '../../interfaces/IComment'
 import { useAppSelector } from '../../redux/hooks'
 import Cookies from 'js-cookie'
@@ -143,11 +143,11 @@ const Comment = ({ comment, postId, setReload, reload }: IProps) => {
                 <div className='mt-2 d-flex align-items-center'>
                     {myProfile && commentLikes && commentLikes.some((user) => user._id === myProfile._id) ?
                         <div className='liked p-1 d-flex align-items-center' onClick={likeorDislikeComment} >
-                            <AiFillLike className='post-icons comment-icons mr-2' />
+                            <AiFillHeart className='post-icons comment-icons mr-2' />
                             {commentLikes && commentLikes.length}
                         </div> :
                         <div className='d-flex align-items-center p-1 like-comment' onClick={likeorDislikeComment}>
-                            <AiOutlineLike className='post-icons comment-icons mr-2' />
+                            <AiOutlineHeart className='post-icons comment-icons mr-2' />
                             {commentLikes && commentLikes.length}
                         </div>
                     }

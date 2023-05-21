@@ -300,17 +300,17 @@ const Post = (props: IProps) => {
                         <div className="d-flex justify-content-between mt-2 p-3 action-icons">
 
                             {myProfile && allLikes && allLikes.some((user) => user._id === myProfile._id) ?
-                                <div onClick={likeOrDislike} className="d-flex align-items-center p-2 action-btn liked">
-                                    <AiFillHeart className="post-icons mr-2" /> <span>Like</span>
+                                <div onClick={likeOrDislike} className="d-flex justify-content-center align-items-center p-2 action-btn liked">
+                                    <AiFillHeart className="post-icons mr-md-2" /> <span className="post-actions-text">Like</span>
                                 </div>
                                 :
-                                <div onClick={likeOrDislike} className="d-flex align-items-center p-2 action-btn">
-                                    <AiOutlineHeart className="post-icons mr-2" /> <span>Like</span>
+                                <div onClick={likeOrDislike} className="d-flex justify-content-center align-items-center p-2 action-btn">
+                                    <AiOutlineHeart className="post-icons mr-md-2" /> <span className="post-actions-text">Like</span>
                                 </div>
                             }
 
-                            <div className="d-flex align-items-center p-2 action-btn" onClick={() => setCommentsShow(!commentsShow)}><AiOutlineComment className="post-icons mr-2" />Comment</div>
-                            <div className="d-flex align-items-center p-2 action-btn" onClick={handleShowRepostModal}><BsArrowClockwise className="post-icons mr-2" />Repost</div>
+                            <div className="d-flex justify-content-center align-items-center p-2 action-btn" onClick={() => setCommentsShow(!commentsShow)}><AiOutlineComment className="post-icons mr-md-2" /> <span className="post-actions-text">Comment</span></div>
+                            <div className="d-flex justify-content-center align-items-center p-2 action-btn" onClick={handleShowRepostModal}><BsArrowClockwise className="post-icons mr-md-2" /> <span className="post-actions-text">Repost</span></div>
                         </div>
                         {commentsShow && <div className="post-comments">
                             <div className="d-flex">

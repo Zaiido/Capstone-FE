@@ -371,3 +371,10 @@ html,
 .profile-posts .col {
     cursor: pointer;
 }
+
+
+@media (max-width: 450px) {
+    .post-actions-text {
+        display: none;
+    }
+}
