@@ -310,3 +310,22 @@
     border-color: rgb(206, 212, 218) !important;
     box-shadow: none !important;
 }
+
+@media (max-width: 500px) {
+    .message-loader {
+        left: 150px;
+    }
+}
+
+@media (min-width: 500px) and (max-width: 950px) {
+    .message-loader {
+        left: 170px;
+    }
+}
+
+
+@media (min-width: 950px) and (max-width: 1100px) {
+    .message-loader {
+        left: 240px;
+    }
+}
